@@ -1,0 +1,22 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "Week 8 Project: Share Tracker",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server:dev": "nodemon server.js",
+    "seeds": "mongo < ./db/seeds.js",
+    "seed:keys": "mongo < ./db/seed_api_keys.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "mongodb": "^3.1.13"
+  },
+  "dependencies": {
+    "nodemon": "^1.18.10"
+  }
+}
