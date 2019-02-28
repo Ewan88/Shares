@@ -1,30 +1,28 @@
 <template lang="html">
-  <div id="search-box">
-    <form/>
+  <div id="app">
+    <search-box/>
   </div>
 </template>
 
 <script>
-import SearchBox from "./components/SearchBox"
+import SearchBox from "./components/SearchBox";
+import { eventBus } from './main.js';
 export default {
   name: 'app',
   data() {
     return {
-      boookings: []
+
     }
   }
 },
 components: {
-  SearchBox,
+  "search-box": SearchBox,
 },
 mounted(){
-  this.fetchPersonal_Stocks();
-
-  eventBus.$on('refresh-data', this.fetchPersonal_Stocks);
+  eventBus.$on('get-stock', (stock) => {
+    this.Stock = stock;
+  });
 },
 methods: {
-  fetchPersonal_Stocks(){
-    
-  }
 }
 </script>
