@@ -11,18 +11,23 @@ export default {
   name: 'app',
   data() {
     return {
+      fetchedStock: {},
+    };
+  },
+  components: {
+    "search-box": SearchBox,
+  },
+  mounted(){
+    this.getStocks();
+  },
+  methods: {
+    getStocks(){
 
+
+      eventBus.$on('fetch-stock', (stock) => {
+        this.fetchedStock = stock;
+      });
     }
   }
-},
-components: {
-  "search-box": SearchBox,
-},
-mounted(){
-  eventBus.$on('get-stock', (stock) => {
-    this.Stock = stock;
-  });
-},
-methods: {
 }
 </script>

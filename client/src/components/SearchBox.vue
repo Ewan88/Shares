@@ -1,5 +1,5 @@
 <template lang="html">
-  <form id="search-box" v-on:submit.prevent="getStock">
+  <form id="search-box" v-on:submit="fetchStock">
       <label for="function">Function:</label>
       <input type="text"
              v-model="this.function"
@@ -23,18 +23,21 @@ export default {
   name: "SearchBox",
   data(){
     return{
-      function: '',
-      symbol: '',
-      apikey: '',
-      searchedStock: {},
+      function: 'TIME_SERIES_WEEKLY',
+      symbol: 'MSFT',
+      apikey: 'demo',
+      fetchedStock: {},
     }
   },
   methods: {
     fetchStock(){
-      fetch(`https://www.alphavantage.co/query?function=${this.function}&symbol=${this.syombol}&apikey=${this.apikey}`)
+      fetch(`https://www.alphavantage.co/query?function=${this.function}&symbol=${this.symbol}&apikey=${this.apikey}`)
       .then(res => res.json())
-      .then(stock => this.searchedStock = stock)
-    };
-  }
-},
+      .then(stock => this.fetchedStock = stock);
+
+
+      eventBus.$emit('fetch-stock', this.fetchedStock);
+    }
+  },
+}
 </script>
