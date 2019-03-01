@@ -34,7 +34,7 @@ export default {
       test: [],
       fetchedStock: {},
 
-      chartData: [['Date','AAPL']],
+      chartData: [['Date','']],
       selectedChartType: 'LineChart',
       chartTypes : ["ColumnChart", "PieChart", "BarChart", "LineChart", "AreaChart", "ScatterChart"],
       chartOptions: {
