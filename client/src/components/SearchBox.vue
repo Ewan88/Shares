@@ -44,9 +44,9 @@ export default {
     fetchStock(){
       fetch(`https://www.alphavantage.co/query?function=${this.selectedSeries}&symbol=${this.symbol}&apikey=${this.apikey}`)
       .then(res => res.json())
-      .then(stock => this.fetchedStock = stock);
-
-      eventBus.$emit('fetch-stock', this.fetchedStock);
+      .then(stock => this.fetchedStock = stock).then(() => {
+        eventBus.$emit('fetch-stock', this.fetchedStock);
+      });
     }
   },
 }
