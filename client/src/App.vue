@@ -1,10 +1,12 @@
 <template lang="html">
   <div id="app">
     <search-box/>
+    <graph/>
   </div>
 </template>
 
 <script>
+import Graph from "./components/Graph";
 import SearchBox from "./components/SearchBox";
 import { eventBus } from './main.js';
 export default {
@@ -16,6 +18,7 @@ export default {
   },
   components: {
     "search-box": SearchBox,
+    "graph": Graph,
   },
   mounted(){
     // this.getStocks();
