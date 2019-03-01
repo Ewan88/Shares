@@ -73,7 +73,7 @@ export default {
         eventBus.$on('fetch-stock', (stock) => {
           this.fetchedStock = stock;
           this.chartOptions.title = Object.keys(this.fetchedStock)[1];
-          // this.chartData[0].push(this.fetchedStock["Meta Data"]["2. Symbol"]);
+          this.chartData[0][1] = this.fetchedStock["Meta Data"]["2. Symbol"];
 
         });
       },
