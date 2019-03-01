@@ -1,5 +1,5 @@
 <template lang="html">
-  <form id="search-box" v-on:submit="fetchStock">
+  <div id="search-box" >
       <label for="function">Function:</label>
       <input type="text"
              v-model="this.function"
@@ -12,8 +12,8 @@
       <input type="text"
              v-model="this.apikey"
              id="symbol" required />
-      <input type="submit" value="Search" id="search"/>
-  </form>
+      <button v-on:click="fetchStock" id="search">Search</button>
+  </div>
 </template>
 
 
@@ -35,8 +35,7 @@ export default {
       .then(res => res.json())
       .then(stock => this.fetchedStock = stock);
 
-
-      eventBus.$emit('fetch-stock', this.fetchedStock);
+      // eventBus.$emit('fetch-stock', this.fetchedStock);
     }
   },
 }

@@ -18,16 +18,16 @@ export default {
     "search-box": SearchBox,
   },
   mounted(){
-    this.getStocks();
+    // this.getStocks();
   },
   methods: {
-    getStocks(){
-
-
-      eventBus.$on('fetch-stock', (stock) => {
-        this.fetchedStock = stock;
-      });
-    }
+    // getStocks(){
+    //
+    //
+    //   eventBus.$on('fetch-stock', (stock) => {
+    //     this.fetchedStock = stock;
+    //   });
+    // }
   }
 }
 </script>
