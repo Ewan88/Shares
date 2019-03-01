@@ -21,6 +21,6 @@ db.shares.insertMany([
     name:"Starbuck",
     qty: 50,
     purchase_date: "2019-01-01",
-    display: true
+    display: false
   }
 ]);

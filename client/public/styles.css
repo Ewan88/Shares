@@ -29,3 +29,36 @@ input.search {
 input.search:focus {
   width: 100%;
 }
+
+
+table {
+  border-collapse: collapse;
+  border: 1px solid silver;
+  letter-spacing: 1px;
+  width: 100%;
+  opacity: 0.95;
+  background: transparent;
+  color: black;
+}
+
+td, th {
+  border: 1px solid rgb(190,190,190);
+  padding: 5px 10px;
+}
+
+th {
+  background-color: rgb(180,180,180);
+}
+
+td {
+  text-align: center;
+  align-items: center;
+}
+
+tr:nth-child(even) td {
+  background-color: rgb(200,200,200);
+}
+
+tr:nth-child(odd) td {
+  background-color: rgb(220,220,220);
+}
