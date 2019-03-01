@@ -16,6 +16,7 @@ export default {
       fetchedStock: {},
     };
   },
+
   components: {
     "search-box": SearchBox,
     "graph": Graph,
@@ -25,10 +26,9 @@ export default {
   },
   methods: {
     // getStocks(){
-    //
-    //
     //   eventBus.$on('fetch-stock', (stock) => {
     //     this.fetchedStock = stock;
+    //     eventBus.$emit('graph-stock', stock);
     //   });
     // }
   }
