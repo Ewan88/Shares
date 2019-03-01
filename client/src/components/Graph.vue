@@ -74,7 +74,6 @@ export default {
           this.fetchedStock = stock;
           this.chartOptions.title = Object.keys(this.fetchedStock)[1];
           this.chartData[0][1] = this.fetchedStock["Meta Data"]["2. Symbol"];
-
         });
       },
     },
