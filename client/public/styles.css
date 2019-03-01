@@ -18,3 +18,14 @@ html body {
   width: 100%;
   padding: 10px 0;
 }
+
+input.search {
+  width: 130px;
+  -webkit-transition: width 0.4s ease-in-out;
+  transition: width 0.4s ease-in-out;
+}
+
+/* When the input field gets focus, change its width to 100% */
+input.search:focus {
+  width: 100%;
+}
