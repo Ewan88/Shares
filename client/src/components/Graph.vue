@@ -31,31 +31,10 @@ export default {
   },
   data() {
     return{
+      test: [],
       fetchedStock: {},
-      chartData: [
-        ['Date', ''],
-        ['2019-02-28', 112.0300],
-        ['2019-01-31', 104.4300],
-        ['2018-12-31', 101.57],
-        ['2018-11-30', 110.89]
-      ],
 
-      // multi-lines data sample:
-      // chartData: [
-      // ['Date',      'AAPL', 'MSFT', 'IBM'],
-      // ['2019-01-01', 1000,  400,    200],
-      // ['2019-01-02', 1170,  460,    250],
-      // ['2019-01-03', 660,   1120,   300],
-      // ['2019-01-04', 1030,  540,    350]],
-
-      // single-line data sample:
-      // chartData: [
-      // ['Date',      'AAPL'],
-      // ['2019-02-28', 112.0300],
-      // ['2019-01-31', 104.4300],
-      // ['2018-12-31', 101.57],
-      // ['2018-11-30', 110.89]],
-
+      chartData: [['Date','']],
       selectedChartType: 'LineChart',
       chartTypes : ["ColumnChart", "PieChart", "BarChart", "LineChart", "AreaChart", "ScatterChart"],
       chartOptions: {
@@ -64,7 +43,7 @@ export default {
         height: 400,
         is3D: true
       },
-    }},
+    },
     mounted(){
       this.getStocks()
     },
@@ -75,6 +54,15 @@ export default {
           this.chartOptions.title = Object.keys(this.fetchedStock)[1];
           this.chartData[0][1] = this.fetchedStock["Meta Data"]["2. Symbol"];
         });
+      },
+      getChartData(){
+        let timeKey = Object.keys(this.fetchedStock)[1]
+        for (let chunk in this.fetchedStock[timeKey]){
+          let label=chunk
+          let dollarValue = this.fetchedStock[timeKey][chunk]['4. close']
+          let element=[label, dollarValue]
+          this.chartData.push(element)
+        }
       },
     },
   }
