@@ -13,7 +13,12 @@ MongoClient.connect('mongodb://localhost:27017')
     const db = client.db('sharetracker');
     const bookingsCollection = db.collection('shares');
     const bookingsRouter = createRouter(bookingsCollection);
+
+    const symbolsCollection = db.collection('symbols');
+    const symbolsRouter = createRouter(symbolsCollection)
+
     app.use('/api/shares', bookingsRouter);
+    app.use('/api/symbols', symbolsRouter);
   })
   .catch(console.err);
 
