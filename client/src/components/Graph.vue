@@ -1,5 +1,5 @@
 <template>
-  <div id="graph">
+  <div id="graph" >
 
       <h2 id="heading">Share Tracker</h2>
       <div class="graphSelectorWrapper">
@@ -32,6 +32,8 @@ export default {
   data() {
     return{
       fetchedStock: {},
+
+
       // multi-lines data sample:
       // chartData: [
       // ['Date',      'AAPL', 'MSFT', 'IBM'],
@@ -50,32 +52,22 @@ export default {
     selectedChartType: 'LineChart',
     chartTypes : ["ColumnChart", "PieChart", "BarChart", "LineChart", "AreaChart", "ScatterChart"],
     chartOptions: {
-      title: 'Monthly Time Series',
+      title: '',
       width: 1000,
       height: 400,
       is3D: true
     },
   }},
   mounted(){
-    this.getStocks();
+    this.getStocks()
   },
   methods: {
     getStocks(){
       eventBus.$on('fetch-stock', (stock) => {
         this.fetchedStock = stock;
+        this.chartOptions.title = Object.keys(this.fetchedStock)[1];
       });
-    }
-  }
+    },
+  },
 }
 </script>
-
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
