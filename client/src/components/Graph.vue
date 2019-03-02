@@ -98,7 +98,6 @@ export default {
       };
       let reversedLables = arrayStoreLables.reverse();
       let reversedVals = arrayStoreVals.reverse();
-      // let loopCount = 0;
 
       // if ((this.chartData.length - 1) >= reversedVals.length) {
       //   loopCount = this.chartData.length;
@@ -106,26 +105,45 @@ export default {
       //   loopCount = reversedVals.length;
       // };
 
-      let loopStart = (this.chartData.length - reversedVals.length);
-      let loopCount = reversedVals.length;
+      if (this.chartData.length >= reversedVals.length) {
+        let loopStart = (this.chartData.length - reversedVals.length);
+        for (let i = 0; i < this.chartData.length; i++) {
+          if (i > 0 && i < loopStart) {
+            this.chartData[i].push(null);
+          };
+        };
+        let j = 0;
+        for (let i = loopStart; i < this.chartData.length; i++) {
+          this.chartData[i].push(reversedVals[j]);
+          j++;
+        };
+      }
+      else {
+        let loopEnd = (reversedVals.length - this.chartData.length);
+        let i = 0;
+        for (i; i < loopEnd; i++) {
+          if (i > 0) {
+            let newArray = [reveresedLabels[i], reversedVals[i]]
+            for (let j = 0; j < (this.chartData[0].length - 2); j++) {
+              newArray.splice(1, 0, null);
+            };
+            this.chartData.splice(i, 0, newArray);
+          };
+        };
 
-      for (let i = 0; i < this.chartData.length; i++) {
-        // debugger;
-        if (i > 0 && i < loopStart) {
-          this.chartData[i].push(null);
-        }
-      };
-      debugger;
-      let j = 0;
-      for (let i = loopStart; i < this.chartData.length; i++) {
-        console.log(`chartData: ${this.chartData[i][0]}`);
-        console.log(`labels: ${reversedLables[j]}`);
-        this.chartData[i].push(reversedVals[j]);
-        j++;
-      };
 
+        // > a
+        // [ 'Date', 'TSLA', 'AAPL', 'MICS' ]
+        // > b
+        // [ 'a', 0 ]
+        // > for (let i = 0; i < (a.length - 2); i++) {
+        //   ... b.splice(1, 0, null)}
+        //   []
+        //   > b
+        //   [ 'a', null, null, 0 ]
+        //   >
+      }
 
-      //
       // for (let j = 0; j < this.chartData.length; j++) {
       //   if (j > 0) {
       //     this.chartData[j].push(0);
