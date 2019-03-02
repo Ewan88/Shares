@@ -27,7 +27,7 @@
 </template>
 
 <script>
-// import { eventBus } from '../main.js'
+import { eventBus } from '../main.js'
 import Dropdown from 'vue-simple-search-dropdown';
 
 export default {
@@ -36,15 +36,17 @@ export default {
     return{
       timeSeries: ['TIME_SERIES_DAILY', 'TIME_SERIES_WEEKLY', 'TIME_SERIES_MONTHLY'],
       selectedSeries: null,
-      symbol: null,
+      // symbol: null,
       keywords: null,
       apikey: null,
       fetchedSymbols: {},
       fetchedStock: {},
 
       // search_box: "",
+      rawSymbols:[],
       allSymbols: [],
-      symbolsFiltered: []
+      symbolsFiltered: [],
+      lastSelection:""
     }
   },
 
@@ -66,14 +68,21 @@ export default {
       return options;
     },
     selectCompany(selection) {
-      if (selection){
-        this.symbol=selection["id"]
+      if (selection["id"]){
+        if (this.lastSelection!=selection){
+        const index = this.rawSymbols.findIndex(s => s["Symbol"]==selection["id"])
+        const equity= this.rawSymbols[index]
+        eventBus.$emit("favourites-added", equity)
+        this.lastSelection=selection;
+      }
       }
     },
     fetchSymbols(){
       fetch('http://localhost:3000/api/symbols')
       .then(res => res.json())
-      .then(res => this.symbolsFiltered=this.allSymbols=this.formatSymbols(res))
+      .then(res => {
+        this.rawSymbols=res
+        this.symbolsFiltered=this.allSymbols=this.formatSymbols(res)})
       // .catch((error) => console.log('Request failed', error))
     },
     // end of search box functions

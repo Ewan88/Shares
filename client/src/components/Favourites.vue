@@ -7,13 +7,16 @@
         <th>Company</th>
         <th>Purchase Date</th>
         <th>Qty</th>
+        <th>Delete</th>
       </tr>
-      <tr v-for='fav in favourites'>
-        <td><input v-on:change="updateDisplay(fav)" class="checkbox" type="checkbox" :id="fav._id" :name="fav._id" :checked="fav.display"></input></td>
+      <tr v-for='(fav,i) in favourites' v-bind:key="fav">
+        <td><input v-on:change="updateDisplay(fav)" class="checkbox" type="checkbox" v-bind:key="i" :id="fav._id" :name="fav._id" :checked="fav.display"/></td>
         <td>{{fav.symbol}}</td>
         <td>{{fav.name}}</td>
-        <td>{{fav.purchase_date}}</td>
-        <td>{{fav.qty}}</td>
+        <!-- <td>{{fav.purchase_date}}</td> -->
+        <td><input v-on:change="updateDate(fav)" type="date"  name="fav_date"     :id="fav._id" v-model="fav.purchase_date" :max="todayDate"/>  </td>
+        <td><input v-on:change="updateQty(fav)" type="number" name="fav_quantity" :id="fav._id" v-model="fav.qty" min="0" /></td>
+        <td><button v-on:click="deleteFavourite(fav._id)">X</button></td>
       </tr>
     </table>
   </div>
@@ -29,7 +32,7 @@ export default {
   data(){
     return{
       favourites: [],
-      data:["hi"]
+      todayDate: ""
     }
   },
 
@@ -56,13 +59,94 @@ export default {
       let index = this.favourites.findIndex(f => f._id==element._id)
       this.favourites[index].display=!element.display;
       //fire the event that something has changed.
-      eventBus.$emit("favourites-changes", this.favourites);
-    }
+      eventBus.$emit("favourites-changed", this.favourites);
+    },
+    updateQty(element){
+      //update the database
+      let index = this.favourites.findIndex(f => f._id == element._id);
+      let oldRecord = this.favourites[index]
+      let updatedRecord={
+        "symbol": oldRecord.symbol,
+        "name": oldRecord.name,
+        "qty": element.qty,
+        "display": oldRecord.display,
+        "purchase_date": oldRecord.purchase_date
+      };
+      fetch('http://localhost:3000/api/shares/'+ element._id, {
+        method: 'PUT',
+        body: JSON.stringify(updatedRecord),
+        headers: { 'Content-Type': 'application/json'}})
+      //update the local favourites object
+      // let index = this.favourites.findIndex(f => f._id==element._id)
+      this.favourites[index].qty=element.qty;
+      //fire the event that something has changed.
+      eventBus.$emit("favourites-changed", this.favourites);
+    },
+    updateDate(element){
+      //update the database
+      let index = this.favourites.findIndex(f => f._id == element._id);
+      let oldRecord = this.favourites[index]
+      let updatedRecord={
+        "symbol": oldRecord.symbol,
+        "name": oldRecord.name,
+        "qty": oldRecord.qty,
+        "display": oldRecord.display,
+        "purchase_date": element.purchase_date
+      };
+      fetch('http://localhost:3000/api/shares/'+ element._id, {
+        method: 'PUT',
+        body: JSON.stringify(updatedRecord),
+        headers: { 'Content-Type': 'application/json'}})
+      //update the local favourites object
+      // let index = this.favourites.findIndex(f => f._id==element._id)
+      this.favourites[index].purchase_date=element.purchase_date;
+      //fire the event that something has changed.
+      eventBus.$emit("favourites-changed", this.favourites);
+    },
+    deleteFavourite(id){
+      const index=this.favourites.findIndex(f => f._id==id);
+      this.favourites.splice(index,1);
+      fetch('http://localhost:3000/api/shares/' + id, {
+        method: 'DELETE'
+      })
+      .then(() => eventBus.$emit('favourites-changed', this.favourites))
+    },
+    addFavourite(equity){
+      let newRecord={
+        "symbol": equity["Symbol"],
+        "name": equity["Name"],
+        "qty": 0,
+        "display": true,
+        "purchase_date": this.todayDate
+      };
+      fetch('http://localhost:3000/api/shares/', {
+        method: 'POST',
+        body: JSON.stringify(newRecord),
+        headers: { 'Content-Type': 'application/json'}
+      })
+      .then(res => res.json())
+      .then(res => {
+        this.favourites.push(res)
+        eventBus.$emit('favourites-changed',this.favourites)})
+    },
+    workOutDates: function(){
+      let d = new Date();
+      let mm = d.getMonth() + 1;
+      let dd = d.getDate();
+      let yy = d.getFullYear();
+      // 2019-02-18
+      // var myDateString = yy + '-' + mm + '-' + dd;
+      this.todayDate = yy + '-' + mm.toString().padStart(2,'0') + '-' + dd.toString().padStart(2,'0');
+    },
   },
   mounted(){
     this.fetchFavourites();
     // this might crash, may need to check this.favourites is populated
-    eventBus.$emit("favourites-changes", this.favourites);
+    eventBus.$emit("favourites-changed", this.favourites);
+    this.workOutDates();
+    eventBus.$on("favourites-added", (equity) => {
+      this.addFavourite(equity)
+    })
   },
   components: {
   }
