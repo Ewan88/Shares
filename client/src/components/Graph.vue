@@ -34,7 +34,17 @@ export default {
 
       test: [],
       fetchedStock: {},
-      chartData: [['Date','AAPL']],
+      chartData: [['Date']],
+      //
+      // ['Year', 'Sales'],
+      // ['2014', 1000],
+      // ['2015', 1170],
+      // ['2016', 660],
+      // ['2017', 1030]
+
+
+
+
       selectedChartType: 'LineChart',
       chartTypes : ["ColumnChart", "PieChart", "BarChart", "LineChart", "AreaChart", "ScatterChart"],
       chartOptions: {
@@ -53,7 +63,7 @@ export default {
       eventBus.$on('fetch-stock', (stock) => {
         this.fetchedStock = stock;
         this.chartOptions.title = Object.keys(this.fetchedStock)[1];
-        // this.chartData[0][1] = this.fetchedStock["Meta Data"]["2. Symbol"];
+        this.chartData[0][1] = this.fetchedStock["Meta Data"]["2. Symbol"];
         this.getChartData()
       });
     },
@@ -62,18 +72,12 @@ export default {
       let arrayStore = []
       for (let chunk in this.fetchedStock[timeKey]){
         let label=chunk
-        let x = this.fetchedStock[timeKey][chunk]['4. close']
-        let dollarValue = Number(x)
+        let dollarValue = Number(this.fetchedStock[timeKey][chunk]['4. close'])
         let element=[label, dollarValue]
         arrayStore.push(element)
-
-        // this.chartData.push(element)
       }
-      // console.log(arrayStore);
-      // debugger
-      let r = arrayStore.reverse()
-      for (let thing of r) {
-        
+      let array = arrayStore.reverse()
+      for (let thing of array) {
         this.chartData.push(thing)
       }
 
