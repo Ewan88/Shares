@@ -98,35 +98,50 @@ export default {
       };
       let reversedLables = arrayStoreLables.reverse();
       let reversedVals = arrayStoreVals.reverse();
-      let loopCount = 0;
+      // let loopCount = 0;
 
-      if ((this.chartData.length - 1) >= reversedVals.length) {
-         loopCount = this.chartData.length;
-      } else {
-        loopCount = reversedVals.length;
-      };
+      // if ((this.chartData.length - 1) >= reversedVals.length) {
+      //   loopCount = this.chartData.length;
+      // } else {
+      //   loopCount = reversedVals.length;
+      // };
 
-      let i = ((this.chartData.length - 1) - reversedVals.length);
+      let loopStart = (this.chartData.length - reversedVals.length);
+      let loopCount = reversedVals.length;
 
-
-      for (let j = 1; j < i; j++) {
-        this.chartData[j].push(0);
-      };
-      let j = 0;
-      debugger;
-      for (i; i < (loopCount - i); i++) {
-        j++;
+      for (let i = 0; i < this.chartData.length; i++) {
         if (i > 0) {
-          console.log(`chartData: ${this.chartData[i][0]}`);
-          console.log(`labels: ${reversedLables[j - 1]}`);
-          if (this.chartData[i][0] === reversedLables[j - 1]) {
-            // debugger;
-            this.chartData[i].push(reversedVals[j - 1]);
-          } else {
-            this.chartData[i].push(0);
-          };
+          this.chartData[i].push(0);
         };
       };
+      debugger;
+      for (let i = loopStart; i < this.chartData.length; i++) {
+        console.log(`chartData: ${this.chartData[i][0]}`);
+        console.log(`labels: ${reversedLables[i]}`);
+      };
+
+
+      //
+      // for (let j = 0; j < this.chartData.length; j++) {
+      //   if (j > 0) {
+      //     this.chartData[j].push(0);
+      //   };
+      // };
+      // let j = 0;
+      // debugger;
+      // for (i; i < this.chartData.length; i++) {
+      //   j++;
+      //   console.log(`chartData: ${this.chartData[i][0]}`);
+      //   console.log(`labels: ${reversedLables[j]}`);
+      //   if (i > 0) {
+      //     if (this.chartData[i][0] === reversedLables[j]) {
+      //       // debugger;
+      //       this.chartData[i].push(reversedVals[j]);
+      //     } else {
+      //       this.chartData[i].push(0);
+      //     };
+      //   };
+      // };
     },
   },
 };
