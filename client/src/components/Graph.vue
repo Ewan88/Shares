@@ -49,7 +49,8 @@ export default {
         title: '',
         width: 1000,
         height: 400,
-        is3D: true
+        is3D: true,
+        interpolateNulls: true
       },
     };
   },
@@ -62,7 +63,7 @@ export default {
         this.fetchedStock = stock;
         this.chartOptions.title = Object.keys(this.fetchedStock)[1];
         this.chartData[0].push(this.fetchedStock["Meta Data"]["2. Symbol"]);
-        debugger;
+        // debugger;
         if (this.chartData[0].length > 2) {
           this.getMultipleChartData();
         }
@@ -87,15 +88,31 @@ export default {
     },
     getMultipleChartData(){
       let timeKey = Object.keys(this.fetchedStock)[1];
-      let arrayStore = [];
+      let arrayStoreLables = [];
+      let arrayStoreVals = [];
       for (let chunk in this.fetchedStock[timeKey]){
+        let label=chunk;
+        arrayStoreLables.push(label)
         let dollarValue = Number(this.fetchedStock[timeKey][chunk]['4. close']);
-        arrayStore.push(dollarValue);
+        arrayStoreVals.push(dollarValue);
       };
-      let reversedArray = arrayStore.reverse();
-      for (var i = 0; i < this.chartData.length; i++) {
+      let reversedLables = arrayStoreLables.reverse();
+      let reversedVals = arrayStoreVals.reverse();
+      let loopCount = 0;
+      if ((this.chartData.length - 1) >= reversedVals) {
+         loopCount = this.chartData.length;
+      } else {
+        loopCount = reversedVals.length;
+      };
+      debugger;
+      for (var i = 0; i < loopCount; i++) {
         if (i > 0) {
-          this.chartData[i].push(reversedArray[i - 1]);
+          if (this.chartData[i][0] === reversedLables[i - 1]) {
+            debugger;
+            this.chartData[i].push(reversedVals[i - 1]);
+          } else {
+            this.chartData[i].push(0);
+          };
         };
       };
     },
