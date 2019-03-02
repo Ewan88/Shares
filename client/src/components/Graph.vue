@@ -110,14 +110,18 @@ export default {
       let loopCount = reversedVals.length;
 
       for (let i = 0; i < this.chartData.length; i++) {
-        if (i > 0) {
+        // debugger;
+        if (i > 0 && i < loopStart) {
           this.chartData[i].push(0);
-        };
+        }
       };
       debugger;
+      let j = 0;
       for (let i = loopStart; i < this.chartData.length; i++) {
         console.log(`chartData: ${this.chartData[i][0]}`);
-        console.log(`labels: ${reversedLables[i]}`);
+        console.log(`labels: ${reversedLables[j]}`);
+        this.chartData[i].push(reversedVals[j]);
+        j++;
       };
 
 
