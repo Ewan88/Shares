@@ -112,7 +112,7 @@ export default {
       for (let i = 0; i < this.chartData.length; i++) {
         // debugger;
         if (i > 0 && i < loopStart) {
-          this.chartData[i].push(0);
+          this.chartData[i].push(null);
         }
       };
       debugger;
