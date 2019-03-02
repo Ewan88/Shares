@@ -1,5 +1,5 @@
 <template>
-  <div id="graph" >
+  <div id="graph" v-if="this.chartData.length >= 2">
 
     <h2 id="heading">Share Tracker</h2>
     <div class="graphSelectorWrapper">
@@ -31,10 +31,10 @@ export default {
   },
   data() {
     return{
+
       test: [],
       fetchedStock: {},
-
-      chartData: [['Date','']],
+      chartData: [['Date','AAPL']],
       selectedChartType: 'LineChart',
       chartTypes : ["ColumnChart", "PieChart", "BarChart", "LineChart", "AreaChart", "ScatterChart"],
       chartOptions: {
@@ -53,18 +53,31 @@ export default {
       eventBus.$on('fetch-stock', (stock) => {
         this.fetchedStock = stock;
         this.chartOptions.title = Object.keys(this.fetchedStock)[1];
-        this.chartData[0][1] = this.fetchedStock["Meta Data"]["2. Symbol"];
+        // this.chartData[0][1] = this.fetchedStock["Meta Data"]["2. Symbol"];
         this.getChartData()
       });
     },
     getChartData(){
       let timeKey = Object.keys(this.fetchedStock)[1]
+      let arrayStore = []
       for (let chunk in this.fetchedStock[timeKey]){
         let label=chunk
-        let dollarValue = this.fetchedStock[timeKey][chunk]['4. close']
+        let x = this.fetchedStock[timeKey][chunk]['4. close']
+        let dollarValue = Number(x)
         let element=[label, dollarValue]
-        this.chartData.push(element)
+        arrayStore.push(element)
+
+        // this.chartData.push(element)
       }
+      // console.log(arrayStore);
+      // debugger
+      let r = arrayStore.reverse()
+      for (let thing of r) {
+        
+        this.chartData.push(thing)
+      }
+
+      // this.chartData.push(arrayStore.reverse())
     },
   },
 }
