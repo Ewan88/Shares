@@ -99,17 +99,29 @@ export default {
       let reversedLables = arrayStoreLables.reverse();
       let reversedVals = arrayStoreVals.reverse();
       let loopCount = 0;
-      if ((this.chartData.length - 1) >= reversedVals) {
+
+      if ((this.chartData.length - 1) >= reversedVals.length) {
          loopCount = this.chartData.length;
       } else {
         loopCount = reversedVals.length;
       };
+
+      let i = ((this.chartData.length - 1) - reversedVals.length);
+
+
+      for (let j = 1; j < i; j++) {
+        this.chartData[j].push(0);
+      };
+      let j = 0;
       debugger;
-      for (var i = 0; i < loopCount; i++) {
+      for (i; i < (loopCount - i); i++) {
+        j++;
         if (i > 0) {
-          if (this.chartData[i][0] === reversedLables[i - 1]) {
-            debugger;
-            this.chartData[i].push(reversedVals[i - 1]);
+          console.log(`chartData: ${this.chartData[i][0]}`);
+          console.log(`labels: ${reversedLables[j - 1]}`);
+          if (this.chartData[i][0] === reversedLables[j - 1]) {
+            // debugger;
+            this.chartData[i].push(reversedVals[j - 1]);
           } else {
             this.chartData[i].push(0);
           };
