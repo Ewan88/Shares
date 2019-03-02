@@ -34,13 +34,15 @@ export default {
 
       test: [],
       fetchedStock: {},
-      chartData: [['Date']],
+      chartData: [     ['Date']    ],
       //
-      // ['Year', 'Sales'],
-      // ['2014', 1000],
-      // ['2015', 1170],
-      // ['2016', 660],
-      // ['2017', 1030]
+      // ['Date', 'AAPL', 'TSLA'],
+      //
+      // ["2019-03-02", 1000],
+      // ["2019-03-01", 1000, 900],
+      // ["2019-02-28", 1170],
+      // ["2019-02-27", 660],
+      // ["2019-02-26", 1030]
 
 
 
@@ -63,7 +65,11 @@ export default {
       eventBus.$on('fetch-stock', (stock) => {
         this.fetchedStock = stock;
         this.chartOptions.title = Object.keys(this.fetchedStock)[1];
-        this.chartData[0][1] = this.fetchedStock["Meta Data"]["2. Symbol"];
+
+
+
+        this.chartData[0].push(this.fetchedStock["Meta Data"]["2. Symbol"]);
+
         this.getChartData()
       });
     },
