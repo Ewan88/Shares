@@ -69,7 +69,7 @@ export default {
         }
         else {
           this.getChartData();
-        };
+        }
       });
     },
     getChartData(){
@@ -80,23 +80,23 @@ export default {
         let dollarValue = Number(this.fetchedStock[timeKey][chunk]['4. close']);
         let element=[label, dollarValue];
         arrayStore.push(element);
-      };
+      }
       let reversedArray = arrayStore.reverse();
       for (let closingVal of reversedArray) {
         this.chartData.push(closingVal);
-      };
+      }
     },
     getMultipleChartData(){
       let timeKey = Object.keys(this.fetchedStock)[1];
-      let arrayStoreLables = [];
+      let arrayStoreLabels = [];
       let arrayStoreVals = [];
       for (let chunk in this.fetchedStock[timeKey]){
         let label=chunk;
-        arrayStoreLables.push(label)
+        arrayStoreLabels.push(label)
         let dollarValue = Number(this.fetchedStock[timeKey][chunk]['4. close']);
         arrayStoreVals.push(dollarValue);
-      };
-      let reversedLables = arrayStoreLables.reverse();
+      }
+      let reversedLabels = arrayStoreLabels.reverse();
       let reversedVals = arrayStoreVals.reverse();
 
       // if ((this.chartData.length - 1) >= reversedVals.length) {
@@ -110,39 +110,43 @@ export default {
         for (let i = 0; i < this.chartData.length; i++) {
           if (i > 0 && i < loopStart) {
             this.chartData[i].push(null);
-          };
-        };
+          }
+        }
         let j = 0;
         for (let i = loopStart; i < this.chartData.length; i++) {
           this.chartData[i].push(reversedVals[j]);
           j++;
-        };
+        }
       }
       else {
         let loopEnd = (reversedVals.length - this.chartData.length);
         let i = 0;
         for (i; i < loopEnd; i++) {
           if (i > 0) {
-            let newArray = [reveresedLabels[i], reversedVals[i]]
+            let newArray = [reversedLabels[i], reversedVals[i]]
             for (let j = 0; j < (this.chartData[0].length - 2); j++) {
               newArray.splice(1, 0, null);
-            };
+            }
             this.chartData.splice(i, 0, newArray);
-          };
-        };
-
-
-        // > a
-        // [ 'Date', 'TSLA', 'AAPL', 'MICS' ]
-        // > b
-        // [ 'a', 0 ]
-        // > for (let i = 0; i < (a.length - 2); i++) {
-        //   ... b.splice(1, 0, null)}
-        //   []
-        //   > b
-        //   [ 'a', null, null, 0 ]
-        //   >
+          }
+        }
+        let j = 0;
+        for (i = loopEnd; i < this.chartData.length; i++) {
+          this.chartData[i].push(reversedVals[j]);
+          j++;
+        }
       }
+
+      // > a
+      // [ 'Date', 'TSLA', 'AAPL', 'MICS' ]
+      // > b
+      // [ 'a', 0 ]
+      // > for (let i = 0; i < (a.length - 2); i++) {
+      //   ... b.splice(1, 0, null)}
+      //   []
+      //   > b
+      //   [ 'a', null, null, 0 ]
+      //   >
 
       // for (let j = 0; j < this.chartData.length; j++) {
       //   if (j > 0) {
@@ -154,9 +158,9 @@ export default {
       // for (i; i < this.chartData.length; i++) {
       //   j++;
       //   console.log(`chartData: ${this.chartData[i][0]}`);
-      //   console.log(`labels: ${reversedLables[j]}`);
+      //   console.log(`labels: ${reversedLabels[j]}`);
       //   if (i > 0) {
-      //     if (this.chartData[i][0] === reversedLables[j]) {
+      //     if (this.chartData[i][0] === reversedLabels[j]) {
       //       // debugger;
       //       this.chartData[i].push(reversedVals[j]);
       //     } else {
