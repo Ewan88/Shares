@@ -24,7 +24,7 @@
       :options="chartOptions"
       />
     </div>
-    </div>
+  </div>
 
   </template>
 
