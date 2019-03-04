@@ -8,9 +8,9 @@
         <th>Purchase Date</th>
         <th>Qty</th>
         <th>Bought Price $</th>
-        <th>Current Price $</th>
-        <th>Profit/Loss $</th>
-        <th>Value $</th>
+        <th>Current Price</th>
+        <th>Profit/Loss</th>
+        <th>Value</th>
         <th>Delete</th>
       </tr>
       <tr v-for='(fav, index) in favourites' v-bind:key="fav._id">
@@ -20,16 +20,16 @@
         <td><input v-on:change="updateElement(fav, 'purchase_date', index)" type="date"  name="fav_date"  :id="fav._id" v-model="fav.purchase_date" :max="todayDate"/></td>
         <td><input v-on:change="updateElement(fav, 'qty', index)" type="number" name="fav_quantity" :id="fav._id" v-model="fav.qty" min="0"/></td>
         <td><input v-on:change="updateElement(fav, 'bought_price', index)" type="number" name="fav_boughtPrice" :id="fav._id" v-model="fav.bought_price" min="0"/></td>
-        <td>{{fav.latest_price}}</td>
-        <td>${{((fav.qty * fav.latest_price)-(fav.qty * fav.bought_price)).toFixed(2)}}</td>
-        <td>${{(fav.qty*fav.latest_price).toFixed(2)}}</td>
+        <td>{{toDollars(fav.latest_price)}}</td>
+        <td>{{toDollars(((fav.qty * fav.latest_price)-(fav.qty * fav.bought_price)))}}</td>
+        <td>{{toDollars((fav.qty*fav.latest_price))}}</td>
         <td><button v-on:click="deleteFavourite(fav._id, index)">X</button></td>
       </tr>
       <tr>
         <td></td><td></td><td></td><td></td><td></td><td></td>
         <td>Totals:</td>
-        <td>{{totalDelta}}</td>
-        <td>{{totalValue}}</td>
+        <td>{{toDollars(totalDelta)}}</td>
+        <td>{{toDollars(totalValue)}}</td>
         <td></td>
       </tr>
 
@@ -78,8 +78,17 @@ export default {
       eventBus.$emit("favourites-changed", toDisplay);
     },
 
+    toDollars(value){
+      let str=Math.abs(value).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+      if (value < 0){
+        str="-$" + str
+      } else {
+        str= "$" + str
+      }
+      return str
+    },
 
-    updateElement(element, key, index, emit=true){
+    updateElement(element, key, index, emit = true){
       let updatedField={};
       if (isNaN(Number(element[key]))){
         updatedField={ [key] : element[key]};
@@ -92,7 +101,9 @@ export default {
         method: 'PUT',
         body: JSON.stringify(updatedField),
         headers: { 'Content-Type': 'application/json'}});
-        if (emit) this.emitDisplayFavourites();
+        if (emit) {
+          this.emitDisplayFavourites()
+        }
       },
 
       deleteFavourite(id, index){
@@ -139,9 +150,9 @@ export default {
         this.favourites.forEach((fav, index) => {
           if (fav.symbol==newPrice.symbol){
             if (fav.bought_price==null){
-              this.updateElement({'bought_price': newPrice.value}, 'bought_price', index, false)
+              this.updateElement({'_id': this.favourites[index]['_id'], 'bought_price': newPrice.value}, 'bought_price', index, false)
             }
-            this.updateElement({'latest_price': newPrice.value}, 'latest_price', index, false)
+            this.updateElement({'_id': this.favourites[index]['_id'], 'latest_price': newPrice.value}, 'latest_price', index, false)
           }
         })
       },

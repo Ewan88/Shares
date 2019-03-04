@@ -1,11 +1,11 @@
 <template lang="html">
   <div id="search-box" >
     <Dropdown v-if="allSymbols!=[]"
-    id="searchBox"
-    :options="symbolsFiltered"
-    :disabled="false"
-    v-on:selected="selectCompany"
-    placeholder="Add Index....">
+      id="searchBox"
+      :options="symbolsFiltered"
+      :disabled="false"
+      v-on:selected="selectCompany"
+      placeholder="Add Index....">
   </Dropdown>
 </div>
 </template>
