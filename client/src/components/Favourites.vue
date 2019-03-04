@@ -7,6 +7,10 @@
         <th>Company</th>
         <th>Purchase Date</th>
         <th>Qty</th>
+        <th>Bought Price</th>
+        <th>Current Price</th>
+        <td>Delta</td>
+        <td>Value</td>
         <th>Delete</th>
       </tr>
       <tr v-for='(fav,i) in favourites' v-bind:key="fav">
@@ -15,6 +19,10 @@
         <td>{{fav.name}}</td>
         <td><input v-on:change="updateDate(fav)" type="date"  name="fav_date"     :id="fav._id" v-model="fav.purchase_date" :max="todayDate"/>  </td>
         <td><input v-on:change="updateQty(fav)" type="number" name="fav_quantity" :id="fav._id" v-model="fav.qty" min="0" /></td>
+        <td>{{fav.bought_price}}</td>
+        <td>{{fav.latest_price}}</td>
+        <td>delta</td>
+        <td>value</td>
         <td><button v-on:click="deleteFavourite(fav._id)">X</button></td>
       </tr>
     </table>
