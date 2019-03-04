@@ -8,8 +8,8 @@ db.shares.insertMany([
     qty: 100,
     purchase_date: "2019-01-01",
     display: true,
-    bought_price: 0,
-    latest_price: 0
+    bought_price: null,
+    latest_price: null
   },
   {
     symbol: "IBM",
@@ -17,8 +17,8 @@ db.shares.insertMany([
     qty: 200,
     purchase_date: "2019-01-01",
     display: true,
-    bought_price: 0,
-    latest_price: 0
+    bought_price: null,
+    latest_price: null
   },
   {
     symbol: "SBUX",
@@ -26,7 +26,7 @@ db.shares.insertMany([
     qty: 50,
     purchase_date: "2019-01-01",
     display: false,
-    bought_price: 0,
-    latest_price: 0
+    bought_price: null,
+    latest_price: null
   }
 ]);
