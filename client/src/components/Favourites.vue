@@ -9,7 +9,7 @@
         <th>Qty</th>
         <th>Delete</th>
       </tr>
-      <tr v-for='(fav,i) in favourites' v-bind:key="fav._id">
+      <tr v-for='(fav,i) in favourites' v-bind:key="fav">
         <td><input v-on:change="updateDisplay(fav)" class="checkbox" type="checkbox" v-bind:key="i" :id="fav._id" :name="fav._id" :checked="fav.display"/></td>
         <td>{{fav.symbol}}</td>
         <td>{{fav.name}}</td>
@@ -40,6 +40,7 @@ export default {
       fetch('http://localhost:3000/api/shares')
       .then(res => res.json())
       .then(favs => this.favourites=favs)
+      .then(() => this.emitDisplayFavourites())
     },
 
     emitDisplayFavourites(){
@@ -153,7 +154,7 @@ export default {
 
   mounted(){
     this.fetchFavourites();
-    this.emitDisplayFavourites();
+
     this.workOutDates();
     eventBus.$on("favourites-added", (equity) => {
       this.addFavourite(equity)
