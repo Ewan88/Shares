@@ -78,11 +78,11 @@ export default {
       this.favourites = newFavourites;
       for (let favourite of this.favourites){
         this.fetchedStock = {};
-        this.currentFavourite = favourite;
+        // this.currentFavourite = favourite;
         fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${favourite.symbol}&apikey=V1X9PH3SZXO178OO`)
         .then(res => res.json())
         .then(stock => this.fetchedStock = stock)
-        .then(() => this.getStocks())
+        .then(() => this.getStocks(favourite))
         .then(() => this.updateFavourites())
       }
     },
@@ -97,23 +97,23 @@ export default {
       newValue.value = this.fetchedStock[time_series][date]['4. close'];
       eventBus.$emit('new-price', newValue);
     },
-    getStocks(){
+    getStocks(favourite){
       this.chartOptions.title = Object.keys(this.fetchedStock)[1];
-      this.chartData[0].push(`${this.fetchedStock["Meta Data"]["2. Symbol"]}: ${this.currentFavourite.purchase_date}`);
+      this.chartData[0].push(`${this.fetchedStock["Meta Data"]["2. Symbol"]}: ${favourite.purchase_date}`);
       if (this.chartData[0].length > 2) {
-        this.getMultipleChartData();
+        this.getMultipleChartData(favourite);
       }
       else {
-        this.getChartData();
+        this.getChartData(favourite);
       }
     },
-    getChartData(){
+    getChartData(favourite){
       let timeKey = Object.keys(this.fetchedStock)[1];
       let arrayStore = [];
       for (let chunk in this.fetchedStock[timeKey]){
-        if (chunk >= this.currentFavourite.purchase_date) {
+        if (chunk >= favourite.purchase_date) {
           let label=chunk;
-          let dollarValue = Number(this.fetchedStock[timeKey][chunk]['4. close']) * this.currentFavourite.qty;
+          let dollarValue = Number(this.fetchedStock[timeKey][chunk]['4. close']) * favourite.qty;
           let element=[label, dollarValue];
           arrayStore.push(element);
         }
@@ -124,15 +124,17 @@ export default {
         this.chartData.push(closingVal);
       }
     },
-    getMultipleChartData(){
+    getMultipleChartData(favourite){
       let timeKey = Object.keys(this.fetchedStock)[1];
       let arrayStoreLabels = [];
       let arrayStoreVals = [];
       for (let chunk in this.fetchedStock[timeKey]){
-        let label=chunk;
-        arrayStoreLabels.push(label)
-        let dollarValue = Number(this.fetchedStock[timeKey][chunk]['4. close']) * this.currentFavourite.qty;
-        arrayStoreVals.push(dollarValue);
+        if (chunk >= favourite.purchase_date) {
+          let label=chunk;
+          arrayStoreLabels.push(label);
+          let dollarValue = Number(this.fetchedStock[timeKey][chunk]['4. close']) * favourite.qty;
+          arrayStoreVals.push(dollarValue);
+        }
       }
       let reversedLabels = arrayStoreLabels.reverse();
       let reversedVals = arrayStoreVals.reverse();
