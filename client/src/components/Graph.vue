@@ -89,11 +89,22 @@ export default {
         fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol=${favourite.symbol}&apikey=V1X9PH3SZXO178OO`)
         .then(res => res.json())
         .then(stock => this.fetchedStock = stock)
-        .then(() => this.getStocks());
+        .then(() => this.getStocks())
+        .then(() => this.updateFavourites())
       }
     },
+    updateFavourites(){
+      let newValue = {
+        symbol: null,
+        value: null,
+      }
+      newValue.symbol = this.fetchedStock["Meta Data"]["2. Symbol"];
+      let time_series = Object.keys(this.fetchedStock)[1];
+      let date = Object.keys(this.fetchedStock[time_series])[0];
+      newValue.value = this.fetchedStock[time_series][date]['4. close']
+      eventBus.$emit('new-price', newValue);
+    },
     getStocks(){
-      console.log(this.fetchedStock);
       this.chartOptions.title = Object.keys(this.fetchedStock)[1];
       this.chartData[0].push(this.fetchedStock["Meta Data"]["2. Symbol"]);
       if (this.chartData[0].length > 2) {
