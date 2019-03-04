@@ -58,7 +58,10 @@ export default {
   },
   mounted(){
     // this.getStocks()
-    eventBus.$on('favourites-changed', (newFavourites) => this.getFavourites(newFavourites));
+    eventBus.$on('favourites-changed', (newFavourites) => {
+      this.getFavourites(newFavourites);
+
+    })
   },
   methods: {
     // fetchSymbol(){
@@ -76,15 +79,21 @@ export default {
     getFavourites(newFavourites){
       this.chartData = [['Date']];
       this.favourites = newFavourites;
-      for (let favourite of this.favourites){
-        this.fetchedStock = {};
+      let promises = [];
+      for (var favourite of this.favourites){
+        // this.fetchedStock = {};
         // this.currentFavourite = favourite;
-        fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${favourite.symbol}&apikey=V1X9PH3SZXO178OO`)
-        .then(res => res.json())
-        .then(stock => this.fetchedStock = stock)
-        .then(() => this.getStocks(favourite))
-        .then(() => this.updateFavourites())
+        promises.push(
+          fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${favourite.symbol}&apikey=FGJ6YIOA7MKB3P94`)
+          .then(res => res.json())
+          .then(stock => this.fetchedStock = stock)
+          .then(() => this.getStocks(stock, favourite))
+          .then(() => this.updateFavourites())
+        )
       }
+      Promise.all(promises).then(() => {
+          this.getTotal();
+      })
     },
     updateFavourites(){
       let newValue = {
@@ -105,6 +114,24 @@ export default {
       }
       else {
         this.getChartData(favourite);
+      }
+    },
+    getTotal(){
+      if (this.favourites.length > 1) {
+        for (let i = 0; i < this.chartData.length; i++){
+          if (i === 0) {
+            this.chartData[i].push('Total');
+          }
+          else {
+            let sum = 0;
+            for (let j = 0; j < this.chartData[i].length; j++){
+              if (j > 0) {
+                sum += this.charData[i][j];
+              }
+            }
+            this.charData[i].push(sum);
+          }
+        }
       }
     },
     getChartData(favourite){
