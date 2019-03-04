@@ -42,6 +42,11 @@ export default {
       .then(res => res.json())
       .then(favs => this.favourites=favs)
     },
+    emitDisplayFavourites(){
+      let toDisplay=[];
+      toDisplay=this.favourites.filter(f=> f.display==true);
+      eventBus.$emit("favourites-changed", toDisplay);
+    },
     updateDisplay(element){
       //update the database
       let updatedRecord={
@@ -59,7 +64,7 @@ export default {
       let index = this.favourites.findIndex(f => f._id==element._id)
       this.favourites[index].display=!element.display;
       //fire the event that something has changed.
-      eventBus.$emit("favourites-changed", this.favourites);
+      this.emitDisplayFavourites();
     },
     updateQty(element){
       //update the database
@@ -77,10 +82,9 @@ export default {
         body: JSON.stringify(updatedRecord),
         headers: { 'Content-Type': 'application/json'}})
       //update the local favourites object
-      // let index = this.favourites.findIndex(f => f._id==element._id)
       this.favourites[index].qty=element.qty;
       //fire the event that something has changed.
-      eventBus.$emit("favourites-changed", this.favourites);
+      this.emitDisplayFavourites();
     },
     updateDate(element){
       //update the database
@@ -98,10 +102,9 @@ export default {
         body: JSON.stringify(updatedRecord),
         headers: { 'Content-Type': 'application/json'}})
       //update the local favourites object
-      // let index = this.favourites.findIndex(f => f._id==element._id)
       this.favourites[index].purchase_date=element.purchase_date;
       //fire the event that something has changed.
-      eventBus.$emit("favourites-changed", this.favourites);
+      this.emitDisplayFavourites();
     },
     deleteFavourite(id){
       const index=this.favourites.findIndex(f => f._id==id);
@@ -109,7 +112,7 @@ export default {
       fetch('http://localhost:3000/api/shares/' + id, {
         method: 'DELETE'
       })
-      .then(() => eventBus.$emit('favourites-changed', this.favourites))
+      .then(() => this.emitDisplayFavourites())
     },
     addFavourite(equity){
       let newRecord={
@@ -127,7 +130,8 @@ export default {
       .then(res => res.json())
       .then(res => {
         this.favourites.push(res)
-        eventBus.$emit('favourites-changed',this.favourites)})
+        this.emitDisplayFavourites()
+      })
     },
     workOutDates: function(){
       let d = new Date();
