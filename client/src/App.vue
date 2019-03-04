@@ -12,7 +12,7 @@ import Graph from "./components/Graph";
 import SearchBox from "./components/SearchBox";
 import Favourites from "./components/Favourites.vue";
 
-import { eventBus } from './main.js';
+// import { eventBus } from './main.js';
 export default {
   name: 'app',
   data() {
@@ -23,7 +23,7 @@ export default {
 
   components: {
     "search-box": SearchBox,
-    "Favourites": Favourites
+    "Favourites": Favourites,
     "graph": Graph,
   },
   mounted(){
