@@ -83,6 +83,13 @@ export default {
       .then(res => {
         this.rawSymbols=res
         this.symbolsFiltered=this.allSymbols=this.formatSymbols(res)})
+
+    //   .then(stock => this.fetchedStock = stock).then(() => {
+    //     eventBus.$emit('fetch-stock', this.fetchedStock);
+    //   });
+    // }
+
+      .then(res => this.symbolsFiltered=this.allSymbols=this.formatSymbols(res))
       // .catch((error) => console.log('Request failed', error))
     },
     // end of search box functions
