@@ -13,7 +13,6 @@
         <td><input v-on:change="updateDisplay(fav)" class="checkbox" type="checkbox" v-bind:key="i" :id="fav._id" :name="fav._id" :checked="fav.display"/></td>
         <td>{{fav.symbol}}</td>
         <td>{{fav.name}}</td>
-        <!-- <td>{{fav.purchase_date}}</td> -->
         <td><input v-on:change="updateDate(fav)" type="date"  name="fav_date"     :id="fav._id" v-model="fav.purchase_date" :max="todayDate"/>  </td>
         <td><input v-on:change="updateQty(fav)" type="number" name="fav_quantity" :id="fav._id" v-model="fav.qty" min="0" /></td>
         <td><button v-on:click="deleteFavourite(fav._id)">X</button></td>
@@ -42,11 +41,13 @@ export default {
       .then(res => res.json())
       .then(favs => this.favourites=favs)
     },
+
     emitDisplayFavourites(){
       let toDisplay=[];
       toDisplay=this.favourites.filter(f=> f.display==true);
       eventBus.$emit("favourites-changed", toDisplay);
     },
+
     updateDisplay(element){
       //update the database
       let updatedRecord={
@@ -66,6 +67,7 @@ export default {
       //fire the event that something has changed.
       this.emitDisplayFavourites();
     },
+
     updateQty(element){
       //update the database
       let index = this.favourites.findIndex(f => f._id == element._id);
@@ -86,6 +88,7 @@ export default {
       //fire the event that something has changed.
       this.emitDisplayFavourites();
     },
+
     updateDate(element){
       //update the database
       let index = this.favourites.findIndex(f => f._id == element._id);
@@ -106,6 +109,7 @@ export default {
       //fire the event that something has changed.
       this.emitDisplayFavourites();
     },
+
     deleteFavourite(id){
       const index=this.favourites.findIndex(f => f._id==id);
       this.favourites.splice(index,1);
@@ -114,6 +118,7 @@ export default {
       })
       .then(() => this.emitDisplayFavourites())
     },
+
     addFavourite(equity){
       let newRecord={
         "symbol": equity["Symbol"],
@@ -122,6 +127,7 @@ export default {
         "display": true,
         "purchase_date": this.todayDate
       };
+
       fetch('http://localhost:3000/api/shares/', {
         method: 'POST',
         body: JSON.stringify(newRecord),
@@ -133,6 +139,7 @@ export default {
         this.emitDisplayFavourites()
       })
     },
+
     workOutDates: function(){
       let d = new Date();
       let mm = d.getMonth() + 1;
@@ -143,6 +150,7 @@ export default {
       this.todayDate = yy + '-' + mm.toString().padStart(2,'0') + '-' + dd.toString().padStart(2,'0');
     },
   },
+
   mounted(){
     this.fetchFavourites();
     // this might crash, may need to check this.favourites is populated
@@ -152,6 +160,7 @@ export default {
       this.addFavourite(equity)
     })
   },
+
   components: {
   }
 }
