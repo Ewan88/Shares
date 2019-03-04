@@ -7,20 +7,26 @@ db.shares.insertMany([
     name: "Apple Inc.",
     qty: 100,
     purchase_date: "2019-01-01",
-    display: true
+    display: true,
+    bought_price: null,
+    latest_price: null
   },
   {
     symbol: "IBM",
     name: "International Business Machines",
     qty: 200,
     purchase_date: "2019-01-01",
-    display: true
+    display: true,
+    bought_price: null,
+    latest_price: null
   },
   {
     symbol: "SBUX",
     name: "Starbucks Corp.",
     qty: 50,
     purchase_date: "2019-01-01",
-    display: false
+    display: false,
+    bought_price: null,
+    latest_price: null
   }
 ]);
