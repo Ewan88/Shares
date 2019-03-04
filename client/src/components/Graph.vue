@@ -79,21 +79,15 @@ export default {
     getFavourites(newFavourites){
       this.chartData = [['Date']];
       this.favourites = newFavourites;
-      let promises = [];
-      for (var favourite of this.favourites){
-        // this.fetchedStock = {};
-        // this.currentFavourite = favourite;
-        promises.push(
-          fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${favourite.symbol}&apikey=FGJ6YIOA7MKB3P94`)
-          .then(res => res.json())
-          .then(stock => this.fetchedStock = stock)
-          .then(() => this.getStocks(stock, favourite))
-          .then(() => this.updateFavourites())
-        )
+      for (let favourite of this.favourites){
+        this.fetchedStock = {};
+        fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${favourite.symbol}&apikey=V1X9PH3SZXO178OO`)
+        .then(res => res.json())
+        .then(stock => this.fetchedStock = stock)
+        .then(() => this.getStocks(favourite))
+        .then(() => this.updateFavourites())
+        .then(() => this.getTotal())
       }
-      Promise.all(promises).then(() => {
-          this.getTotal();
-      })
     },
     updateFavourites(){
       let newValue = {
@@ -117,19 +111,18 @@ export default {
       }
     },
     getTotal(){
-      if (this.favourites.length > 1) {
+      // debugger;
+      if (this.favourites.length === this.chartData[0].length - 1) {
         for (let i = 0; i < this.chartData.length; i++){
           if (i === 0) {
             this.chartData[i].push('Total');
           }
           else {
             let sum = 0;
-            for (let j = 0; j < this.chartData[i].length; j++){
-              if (j > 0) {
-                sum += this.charData[i][j];
-              }
+            for (let j = 1; j < this.chartData[i].length; j++){
+              sum += this.chartData[i][j];
             }
-            this.charData[i].push(sum);
+            this.chartData[i].push(sum);
           }
         }
       }
