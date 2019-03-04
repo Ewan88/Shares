@@ -132,13 +132,6 @@ export default {
       let timeKey = Object.keys(this.fetchedStock)[1];
       let arrayStoreLabels = [];
       let arrayStoreVals = [];
-      let newValue = {
-        symbol: null,
-        value: null,
-      }
-      newValue.symbol = arrayStoreLabels[0];
-      newValue.value = arrayStoreVals[0];
-      eventBus.$emit('new-price', newValue);
       for (let chunk in this.fetchedStock[timeKey]){
         let label=chunk;
         arrayStoreLabels.push(label)
