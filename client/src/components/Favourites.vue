@@ -9,7 +9,7 @@
         <th>Qty</th>
         <th>Delete</th>
       </tr>
-      <tr v-for='(fav,i) in favourites' v-bind:key="fav">
+      <tr v-for='(fav,i) in favourites' v-bind:key="fav._id">
         <td><input v-on:change="updateDisplay(fav)" class="checkbox" type="checkbox" v-bind:key="i" :id="fav._id" :name="fav._id" :checked="fav.display"/></td>
         <td>{{fav.symbol}}</td>
         <td>{{fav.name}}</td>

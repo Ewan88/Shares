@@ -89,23 +89,11 @@ export default {
     //   });
     // }
 
-      .then(res => this.symbolsFiltered=this.allSymbols=this.formatSymbols(res))
+      // .then(res => this.symbolsFiltered=this.allSymbols=this.formatSymbols(res))
       // .catch((error) => console.log('Request failed', error))
     },
     // end of search box functions
 
-    // fetchSymbol(){
-    //   fetch(`https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${this.keywords}&apikey=${this.apikey}`)
-    //   .then(res => res.json())
-    //   .then(symbols => this.fetchedSymbols = symbols);
-    // },
-    // fetchStock(){
-    //   fetch(`https://www.alphavantage.co/query?function=${this.selectedSeries}&symbol=${this.symbol}&apikey=${this.apikey}`)
-    //   .then(res => res.json())
-    //   .then(stock => this.fetchedStock = stock);
-    //
-    //   // eventBus.$emit('fetch-stock', this.fetchedStock);
-    // }
   },
   mounted() {
     this.fetchSymbols();

@@ -5,13 +5,13 @@
     <div class="graphSelectorWrapper">
       <label for="chartType">Change Graph Type:</label>
       <select name="chartType" id="chartType" v-model="selectedChartType">
-        <option v-for="chartType in chartTypes" :value="chartType">{{ chartType }}</option>
+        <option v-for="chartType in chartTypes" :key="chartType" :value="chartType">{{ chartType }}</option>
       </select>
     </div>
     <div id="deleteTestWrapper">
       <label for="deleteTest">Delete a Stock:</label>
       <select name="deleteTest" id="deleteTest" v-model="selectedData" v-on:change="deleteChartData(selectedData)">
-        <option v-for="(data, index) in chartData[0]" :value="index" :index="index">
+        <option v-for="(data, index) in chartData[0]" :key="data" :value="index" :index="index">
           {{ data }} - {{ index }}
         </option>
       </select>
@@ -41,6 +41,7 @@ export default {
     return{
 
       test: [],
+      favourites: [],
       fetchedStock: {},
       //   chartData: [
       // ['Date', 'AAPL', 'TSLA'],
@@ -64,22 +65,43 @@ export default {
     };
   },
   mounted(){
-    this.getStocks()
+    // this.getStocks()
+    eventBus.$on('favourites-changed', (newFavourites) => this.getFavourites(newFavourites));
   },
   methods: {
+    // fetchSymbol(){
+    //   fetch(`https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${this.keywords}&apikey=${this.apikey}`)
+    //   .then(res => res.json())
+    //   .then(symbols => this.fetchedSymbols = symbols);
+    // },
+    // fetchStock(){
+    //   fetch(`https://www.alphavantage.co/query?function=${this.selectedSeries}&symbol=${this.symbol}&apikey=${this.apikey}`)
+    //   .then(res => res.json())
+    //   .then(stock => this.fetchedStock = stock);
+    //
+    //   // eventBus.$emit('fetch-stock', this.fetchedStock);
+    // }
+    getFavourites(newFavourites){
+      this.chartData = [['Date']];
+      this.favourites = newFavourites;
+      for (let favourite of this.favourites){
+        this.fetchedStock = {};
+        fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol=${favourite.symbol}&apikey=V1X9PH3SZXO178OO`)
+        .then(res => res.json())
+        .then(stock => this.fetchedStock = stock)
+        .then(() => this.getStocks());
+      }
+    },
     getStocks(){
-      eventBus.$on('fetch-stock', (stock) => {
-        this.fetchedStock = stock;
-        this.chartOptions.title = Object.keys(this.fetchedStock)[1];
-        this.chartData[0].push(this.fetchedStock["Meta Data"]["2. Symbol"]);
-        // debugger;
-        if (this.chartData[0].length > 2) {
-          this.getMultipleChartData();
-        }
-        else {
-          this.getChartData();
-        }
-      });
+      console.log(this.fetchedStock);
+      this.chartOptions.title = Object.keys(this.fetchedStock)[1];
+      this.chartData[0].push(this.fetchedStock["Meta Data"]["2. Symbol"]);
+      if (this.chartData[0].length > 2) {
+        this.getMultipleChartData();
+      }
+      else {
+        this.getChartData();
+      }
     },
     getChartData(){
       let timeKey = Object.keys(this.fetchedStock)[1];
