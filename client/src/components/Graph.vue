@@ -8,14 +8,6 @@
         <option v-for="chartType in chartTypes" :key="chartType" :value="chartType">{{ chartType }}</option>
       </select>
     </div>
-    <div id="deleteTestWrapper">
-      <label for="deleteTest">Delete a Stock:</label>
-      <select name="deleteTest" id="deleteTest" v-model="selectedData" v-on:change="deleteChartData(selectedData)">
-        <option v-for="(data, index) in chartData[0]" :key="data" :value="index" :index="index">
-          {{ data }} - {{ index }}
-        </option>
-      </select>
-    </div>
     <div v-if="chartData!=[]" id="theChart">
       <gchart
       v-if="chartData"
@@ -39,10 +31,10 @@ export default {
   },
   data() {
     return{
-
       test: [],
       favourites: [],
       fetchedStock: {},
+      currentFavourite: null,
       //   chartData: [
       // ['Date', 'AAPL', 'TSLA'],
       // ["2019-03-02", null, 1000],
@@ -86,10 +78,11 @@ export default {
       this.favourites = newFavourites;
       for (let favourite of this.favourites){
         this.fetchedStock = {};
-        fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol=${favourite.symbol}&apikey=V1X9PH3SZXO178OO`)
+        // this.currentFavourite = favourite;
+        fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${favourite.symbol}&apikey=V1X9PH3SZXO178OO`)
         .then(res => res.json())
         .then(stock => this.fetchedStock = stock)
-        .then(() => this.getStocks())
+        .then(() => this.getStocks(favourite))
         .then(() => this.updateFavourites())
       }
     },
@@ -101,42 +94,47 @@ export default {
       newValue.symbol = this.fetchedStock["Meta Data"]["2. Symbol"];
       let time_series = Object.keys(this.fetchedStock)[1];
       let date = Object.keys(this.fetchedStock[time_series])[0];
-      newValue.value = this.fetchedStock[time_series][date]['4. close']
+      newValue.value = this.fetchedStock[time_series][date]['4. close'];
       eventBus.$emit('new-price', newValue);
     },
-    getStocks(){
+    getStocks(favourite){
       this.chartOptions.title = Object.keys(this.fetchedStock)[1];
-      this.chartData[0].push(this.fetchedStock["Meta Data"]["2. Symbol"]);
+      this.chartData[0].push(`${this.fetchedStock["Meta Data"]["2. Symbol"]}: ${favourite.purchase_date}`);
       if (this.chartData[0].length > 2) {
-        this.getMultipleChartData();
+        this.getMultipleChartData(favourite);
       }
       else {
-        this.getChartData();
+        this.getChartData(favourite);
       }
     },
-    getChartData(){
+    getChartData(favourite){
       let timeKey = Object.keys(this.fetchedStock)[1];
       let arrayStore = [];
       for (let chunk in this.fetchedStock[timeKey]){
-        let label=chunk;
-        let dollarValue = Number(this.fetchedStock[timeKey][chunk]['4. close']);
-        let element=[label, dollarValue];
-        arrayStore.push(element);
+        if (chunk >= favourite.purchase_date) {
+          let label=chunk;
+          let dollarValue = Number(this.fetchedStock[timeKey][chunk]['4. close']) * favourite.qty;
+          let element=[label, dollarValue];
+          arrayStore.push(element);
+        }
       }
       let reversedArray = arrayStore.reverse();
+      // debugger;
       for (let closingVal of reversedArray) {
         this.chartData.push(closingVal);
       }
     },
-    getMultipleChartData(){
+    getMultipleChartData(favourite){
       let timeKey = Object.keys(this.fetchedStock)[1];
       let arrayStoreLabels = [];
       let arrayStoreVals = [];
       for (let chunk in this.fetchedStock[timeKey]){
-        let label=chunk;
-        arrayStoreLabels.push(label)
-        let dollarValue = Number(this.fetchedStock[timeKey][chunk]['4. close']);
-        arrayStoreVals.push(dollarValue);
+        if (chunk >= favourite.purchase_date) {
+          let label=chunk;
+          arrayStoreLabels.push(label);
+          let dollarValue = Number(this.fetchedStock[timeKey][chunk]['4. close']) * favourite.qty;
+          arrayStoreVals.push(dollarValue);
+        }
       }
       let reversedLabels = arrayStoreLabels.reverse();
       let reversedVals = arrayStoreVals.reverse();
