@@ -153,8 +153,7 @@ export default {
 
   mounted(){
     this.fetchFavourites();
-    // this might crash, may need to check this.favourites is populated
-    eventBus.$emit("favourites-changed", this.favourites);
+    this.emitDisplayFavourites();
     this.workOutDates();
     eventBus.$on("favourites-added", (equity) => {
       this.addFavourite(equity)
