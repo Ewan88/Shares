@@ -126,7 +126,9 @@ export default {
         "name": equity["Name"],
         "qty": 0,
         "display": true,
-        "purchase_date": this.todayDate
+        "purchase_date": this.todayDate,
+        "bought_price": null,
+        "latest_price": null
       };
 
       fetch('http://localhost:3000/api/shares/', {
@@ -150,14 +152,53 @@ export default {
       // var myDateString = yy + '-' + mm + '-' + dd;
       this.todayDate = yy + '-' + mm.toString().padStart(2,'0') + '-' + dd.toString().padStart(2,'0');
     },
+
+    updateSharePrice(newPrice){
+      //update the database
+      // symbol: "SBUX",
+      // name: "Starbucks Corp.",
+      // qty: 50,
+      // purchase_date: "2019-01-01",
+      // display: false,
+      // bought_price: 0,
+      // latest_price: 0
+      // update the local this.favourites array
+      for (fav of this.favourites){
+        if (fav.symbol==newPrice.symbol){
+          if (fav.)
+        }
+      }
+        let index = this.favourites.findIndex(f => f._id == element._id);
+        let oldRecord = this.favourites[index]
+        let updatedRecord={
+          "symbol": oldRecord.symbol,
+          "name": oldRecord.name,
+          "qty": oldRecord.qty,
+          "display": oldRecord.display,
+          "purchase_date": element.purchase_date
+        };
+        fetch('http://localhost:3000/api/shares/'+ element._id, {
+          method: 'PUT',
+          body: JSON.stringify(updatedRecord),
+          headers: { 'Content-Type': 'application/json'}})
+        //update the local favourites object
+        this.favourites[index].purchase_date=element.purchase_date;
+        //fire the event that something has changed.
+        this.emitDisplayFavourites();
+      },
+
+
+    },
   },
 
   mounted(){
     this.fetchFavourites();
-
     this.workOutDates();
     eventBus.$on("favourites-added", (equity) => {
       this.addFavourite(equity)
+    });
+    eventBus.$on("new-price", (sharePrice) => {
+      this.updateSharePrice(sharePrice)
     })
   },
 
