@@ -1,13 +1,5 @@
 <template>
   <div id="graph" v-if="this.chartData.length >= 2">
-
-    <h2 id="heading">Share Tracker</h2>
-    <div class="graphSelectorWrapper">
-      <label for="chartType">Change Graph Type:</label>
-      <select name="chartType" id="chartType" v-model="selectedChartType">
-        <option v-for="chartType in chartTypes" :key="chartType" :value="chartType">{{ chartType }}</option>
-      </select>
-    </div>
     <div v-if="chartData!=[]" id="theChart">
       <gchart
       v-if="chartData"
@@ -32,17 +24,11 @@ export default {
   data() {
     return{
       test: [],
+
       favourites: [],
+
       fetchedStock: {},
       currentFavourite: null,
-      //   chartData: [
-      // ['Date', 'AAPL', 'TSLA'],
-      // ["2019-03-02", null, 1000],
-      // ["2019-03-01", 1000, 900],
-      // ["2019-02-28", 1170, 890],
-      // ["2019-02-27", 660, 910],
-      // ["2019-02-26", 1030, 780]
-      // ],
       chartData: [['Date']],
       selectedData: null,
       selectedChartType: 'LineChart',
@@ -57,37 +43,39 @@ export default {
     };
   },
   mounted(){
-    // this.getStocks()
-    eventBus.$on('favourites-changed', (newFavourites) => {
-      this.getFavourites(newFavourites);
-
-    })
+    eventBus.$on('favourites-changed', (newFavourites) => {this.getFavourites(newFavourites);})
   },
   methods: {
-    // fetchSymbol(){
-    //   fetch(`https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${this.keywords}&apikey=${this.apikey}`)
-    //   .then(res => res.json())
-    //   .then(symbols => this.fetchedSymbols = symbols);
-    // },
-    // fetchStock(){
-    //   fetch(`https://www.alphavantage.co/query?function=${this.selectedSeries}&symbol=${this.symbol}&apikey=${this.apikey}`)
-    //   .then(res => res.json())
-    //   .then(stock => this.fetchedStock = stock);
-    //
-    //   // eventBus.$emit('fetch-stock', this.fetchedStock);
-    // }
     getFavourites(newFavourites){
-      this.chartData = [['Date']];
-      this.favourites = newFavourites;
-      for (let favourite of this.favourites){
-        this.fetchedStock = {};
-        fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${favourite.symbol}&apikey=V1X9PH3SZXO178OO`)
-        .then(res => res.json())
-        .then(stock => this.fetchedStock = stock)
-        .then(() => this.getStocks(favourite))
-        .then(() => this.updateFavourites())
-        .then(() => this.getTotal())
+
+      if (this.favourites.length < newFavourites.length) {
+        this.favourites = newFavourites;
+        this.chartData = [['Date']];
+        for (let favourite of this.favourites){
+          fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${favourite.symbol}&apikey=V1X9PH3SZXO178OO`)
+          .then(res => res.json())
+          .then(stock => this.fetchedStock = stock)
+          .then(() => this.getStocks(favourite))
+          .then(() => this.updateFavourites())
+          .then(() => this.getTotal())
+        }
+      } else {
+        var res = this.favourites.filter(item1 =>
+        !newFavourites.some(item2 => (item2.symbol === item1.symbol && item2.purchase_date === item1.purchase_date)))
+        for (var i = 0; i < this.favourites.length; i++) {
+          if (this.favourites[i]._id === res[0]._id) {
+            i++;
+              this.deleteChartData(i);
+          }
+        }
+        this.favourites = newFavourites
+        this.deleteChartData(this.favourites.length + 2)
+        this.getTotal()
+        // if (this.favourites.length === 1) {
+        //   this.deleteChartData(2)
+        // }
       }
+
     },
     updateFavourites(){
       let newValue = {
@@ -111,7 +99,6 @@ export default {
       }
     },
     getTotal(){
-      // debugger;
       if (this.favourites.length === this.chartData[0].length - 1) {
         for (let i = 0; i < this.chartData.length; i++){
           if (i === 0) {
@@ -139,7 +126,6 @@ export default {
         }
       }
       let reversedArray = arrayStore.reverse();
-      // debugger;
       for (let closingVal of reversedArray) {
         this.chartData.push(closingVal);
       }
