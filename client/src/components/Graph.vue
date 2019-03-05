@@ -26,7 +26,8 @@ export default {
       test: [],
 
       favourites: [],
-
+      key: ["C520LUMEL3DFI4ZX","FGJ6YIOA7MKB3P94","V1X9PH3SZXO178OO"],
+      keyIndex: 0,
       fetchedStock: {},
       currentFavourite: null,
       chartData: [['Date']],
@@ -49,10 +50,10 @@ export default {
     getFavourites(newFavourites){
 
       if (this.favourites.length < newFavourites.length) {
-        this.favourites = newFavourites;
-        this.chartData = [['Date']];
+        this.favourites = newFavourites
+        this.chartData = [['Date']]
         for (let favourite of this.favourites){
-          fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${favourite.symbol}&apikey=V1X9PH3SZXO178OO`)
+          fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${favourite.symbol}&apikey=${this.getKey()}`)
           .then(res => res.json())
           .then(stock => this.fetchedStock = stock)
           .then(() => this.getStocks(favourite))
@@ -68,14 +69,26 @@ export default {
               this.deleteChartData(i);
           }
         }
+        // if (this.favourites.length > newFavourites.length){
         this.favourites = newFavourites
-        this.deleteChartData(this.favourites.length + 2)
-        this.getTotal()
-        // if (this.favourites.length === 1) {
-        //   this.deleteChartData(2)
-        // }
+        this.deleteChartData(this.favourites.length + 1)
+        if (this.favourites.length > 1) {
+          this.getTotal()
+        }
+        if (this.favourites.length === 1) {
+          this.deleteChartData(2)
+        }
+      // }
       }
 
+    },
+    getKey(){
+      const currentKey = this.key[this.keyIndex]
+      this.keyIndex += 1
+      if (this.keyIndex > this.key.length) {
+        this.keyIndex = 0
+      }
+      return currentKey
     },
     updateFavourites(){
       let newValue = {
@@ -99,10 +112,10 @@ export default {
       }
     },
     getTotal(){
-      if (this.favourites.length === this.chartData[0].length - 1) {
+      if ((this.favourites.length === this.chartData[0].length - 1)&&(this.favourites.length > 1)) {
         for (let i = 0; i < this.chartData.length; i++){
           if (i === 0) {
-            this.chartData[i].push('Total');
+            this.chartData[0].push('Total');
           }
           else {
             let sum = 0;
@@ -120,7 +133,7 @@ export default {
       for (let chunk in this.fetchedStock[timeKey]){
         if (chunk >= favourite.purchase_date) {
           let label=chunk;
-          let dollarValue = Number(this.fetchedStock[timeKey][chunk]['4. close']) * favourite.qty;
+          let dollarValue = Number((Number(this.fetchedStock[timeKey][chunk]['4. close']) * favourite.qty).toFixed(2));
           let element=[label, dollarValue];
           arrayStore.push(element);
         }
@@ -138,7 +151,7 @@ export default {
         if (chunk >= favourite.purchase_date) {
           let label=chunk;
           arrayStoreLabels.push(label);
-          let dollarValue = Number(this.fetchedStock[timeKey][chunk]['4. close']) * favourite.qty;
+          let dollarValue = Number((Number(this.fetchedStock[timeKey][chunk]['4. close']) * favourite.qty).toFixed(2));
           arrayStoreVals.push(dollarValue);
         }
       }
@@ -146,6 +159,7 @@ export default {
       let reversedVals = arrayStoreVals.reverse();
       if (this.chartData.length >= reversedVals.length) {
         let loopStart = (this.chartData.length - reversedVals.length);
+        console.log(loopStart);
         for (let i = 0; i < this.chartData.length; i++) {
           if (i > 0 && i < loopStart) {
             this.chartData[i].push(null);
@@ -159,6 +173,7 @@ export default {
       }
       else {
         let loopEnd = (reversedVals.length - this.chartData.length);
+        console.log(loopEnd);
         let i = 0;
         for (i; i < loopEnd; i++) {
           if (i > 0) {
