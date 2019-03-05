@@ -115,7 +115,7 @@ export default {
           "symbol": equity["Symbol"],
           "name": equity["Name"],
           "qty": 0,
-          "display": true,
+          "display": false,
           "purchase_date": this.todayDate,
           "bought_price": null,
           "latest_price": null

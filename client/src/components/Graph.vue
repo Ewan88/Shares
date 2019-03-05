@@ -119,6 +119,8 @@ export default {
           }
           else {
             let sum = 0;
+            let index = 1;
+            // let sum = this.chardData[i].reduce((total, element, index)=> total+ element[index],0)
             for (let j = 1; j < this.chartData[i].length; j++){
               sum += this.chartData[i][j];
             }
