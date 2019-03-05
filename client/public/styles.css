@@ -2,7 +2,7 @@ html body {
   padding: 0;
   margin: 0;
   background-color: #FFFFFF;
-  font-family: 'Comfortaa';
+  font-family: 'Oxygen';
 }
 
 #app {
@@ -65,7 +65,7 @@ td, th {
 th {
   background-color: #044389;
   color: white;
-  font-weight: lighter;
+  font-weight: 300;
 }
 
 td {
@@ -104,4 +104,13 @@ button:hover {
 .graph {
   display: flex;
   justify-content: center;
+}
+
+tr:last-child td {
+  font-weight: 700;
+  background-color: white;
+}
+
+#total {
+  background-color: #ffa500;
 }

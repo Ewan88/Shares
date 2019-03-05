@@ -25,14 +25,12 @@
         <td>{{toDollars((fav.qty*fav.latest_price))}}</td>
         <td><button v-on:click="deleteFavourite(fav._id, index)">X</button></td>
       </tr>
-      <tr class="totals">
-        <template id="totals">
+      <tr>
         <td></td><td></td><td></td><td></td><td></td><td></td>
-        <td>Totals:</td>
-        <td>{{toDollars(totalDelta)}}</td>
-        <td>{{toDollars(totalValue)}}</td>
+        <td id="total">Totals:</td>
+        <td id="total">{{toDollars(totalDelta)}}</td>
+        <td id="total">{{toDollars(totalValue)}}</td>
         <td></td>
-      </template>
       </tr>
 
     </table>
