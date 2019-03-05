@@ -7,7 +7,7 @@ db.shares.insertMany([
     name: "Apple Inc.",
     qty: 100,
     purchase_date: "2019-01-01",
-    display: true,
+    display: false,
     bought_price: null,
     latest_price: null
   },
@@ -16,7 +16,7 @@ db.shares.insertMany([
     name: "International Business Machines",
     qty: 200,
     purchase_date: "2019-01-01",
-    display: true,
+    display: false,
     bought_price: null,
     latest_price: null
   },
