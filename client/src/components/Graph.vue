@@ -197,8 +197,13 @@ export default {
         }
       },
       deleteChartData(index){
-        for (let i = 0; i < this.chartData.length; i++) {
-          this.chartData[i].splice(index, 1);
+        if (this.chartData[0].length < 2) {
+          this.chartData = [['Date']];
+        }
+        else {
+          for (let i = 0; i < this.chartData.length; i++) {
+            this.chartData[i].splice(index, 1);
+          }
         }
       },
     },
