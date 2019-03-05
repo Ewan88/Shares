@@ -53,14 +53,10 @@ export default {
 
   computed:{
     totalDelta: function(){
-      let delta = 0;
-      this.favourites.forEach((fav) => delta+=((fav.qty * fav.latest_price)-(fav.qty * fav.bought_price)));
-      return delta.toFixed(2);
+      return this.favourites.reduce((total, fav) => total + ((fav.qty * fav.latest_price)-(fav.qty * fav.bought_price)),0)
     },
     totalValue: function(){
-      let total = 0;
-      this.favourites.forEach((fav) => total+=(fav.qty * fav.latest_price));
-      return total.toFixed(2);
+      return this.favourites.reduce((total, fav) => total + (fav.qty * fav.latest_price), 0)
     }
   },
 
