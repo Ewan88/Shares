@@ -1,5 +1,6 @@
 <template lang="html">
   <div id="search-box" >
+    <img src="../../public/logo.png" alt="">
     <Dropdown v-if="allSymbols!=[]"
       id="searchBox"
       :options="symbolsFiltered"

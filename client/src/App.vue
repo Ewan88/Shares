@@ -2,7 +2,7 @@
   <div id="app">
     <search-box/>
     <Favourites/>
-    <graph/>
+    <graph class="graph"/>
   </div>
 </template>
 

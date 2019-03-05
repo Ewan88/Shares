@@ -1,23 +1,38 @@
 html body {
   padding: 0;
   margin: 0;
+  background-color: #FFFFFF;
+  font-family: 'Comfortaa';
 }
 
 #app {
   width: 100%;
   padding: 0;
-  font-family: sans-serif;
 }
+
 
 #search-box {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
-  align-content: center;
-  background-color: rgba(0, 0, 0, 0.4);
+  justify-content: space-between;
   width: 100%;
-  padding: 10px 0;
+  padding: 0;
 }
+
+#search-box img {
+  height: 100px;
+  margin-left: 1em;
+}
+
+#searchBox {
+  margin-right: 2em;
+  border: 1px solid #044389;
+}
+
+.dropdown .dropdown-input[data-v-4e520537] {
+  cursor: text !important;
+}
+
 
 input.search {
   width: 130px;
@@ -32,22 +47,25 @@ input.search:focus {
 
 
 table {
-  border-collapse: collapse;
-  border: 1px solid silver;
+  border-collapse: separate;
+  /* border: 1px solid #044389; */
   letter-spacing: 1px;
   width: 100%;
   opacity: 0.95;
   background: transparent;
   color: black;
+  font-size: small;
 }
 
 td, th {
-  border: 1px solid rgb(190,190,190);
+  /* border: 1px solid #044389; */
   padding: 5px 10px;
 }
 
 th {
-  background-color: rgb(180,180,180);
+  background-color: #044389;
+  color: white;
+  font-weight: lighter;
 }
 
 td {
@@ -56,9 +74,34 @@ td {
 }
 
 tr:nth-child(even) td {
-  background-color: rgb(200,200,200);
+  background-color: #CDE1F2;
 }
 
 tr:nth-child(odd) td {
-  background-color: rgb(220,220,220);
+  background-color: #6D9DC5;
+}
+
+input[type="number"] {
+  width: 50px;
+}
+
+input[type="checkbox"] {
+  cursor: pointer;
+}
+
+button {
+  background: none;
+  border: none;
+  color: red;
+  font-size: large;
+}
+
+button:hover {
+  cursor: pointer;
+  color: darkred;
+}
+
+.graph {
+  display: flex;
+  justify-content: center;
 }
