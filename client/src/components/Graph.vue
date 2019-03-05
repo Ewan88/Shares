@@ -63,11 +63,18 @@ export default {
       } else {
         var res = this.favourites.filter(item1 =>
           !newFavourites.some(item2 => (item2.symbol === item1.symbol && item2.purchase_date === item1.purchase_date)))
-          for (var i = 0; i < this.favourites.length; i++) {
-            if (this.favourites[i]._id === res[0]._id) {
-              i++;
+          for (var i = 0; i < this.chartData[0].length; i++) {
+            if (`${res[0].symbol}: ${res[0].purchase_date}` === this.chartData[0][i]) {
               this.deleteChartData(i);
             }
+
+            // if (this.favourites[i]._id === res[0]._id) {
+            //   i++;
+            //   this.deleteChartData(i);
+            // }
+
+
+
           }
           this.favourites = newFavourites
           this.deleteChartData(this.favourites.length + 1)
