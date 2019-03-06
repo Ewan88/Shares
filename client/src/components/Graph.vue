@@ -44,16 +44,23 @@ export default {
   methods: {
     getFavourites(newFavourites){
       if (this.favourites.length < newFavourites.length) {
-        this.favourites = newFavourites;
-        this.chartData = [['Date']];
-        for (let favourite of this.favourites){
-          fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${favourite.symbol}&apikey=${this.getKey()}`)
+        // this.favourites = newFavourites;
+        // this.chartData = [['Date']];
+        var res = newFavourites.filter(item1 =>
+          !this.favourites.some(item2 => (item2.symbol === item1.symbol && item2.purchase_date === item1.purchase_date)))
+
+          console.log(res);
+          // debugger;
+
+        for (let i = 0; i < res.length; i++){
+          fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${res[i].symbol}&apikey=${this.getKey()}`)
           .then(res => res.json())
           .then(stock => this.fetchedStock = stock)
-          .then(() => this.getStocks(favourite))
+          .then(() => this.getStocks(res[i]))
           .then(() => this.updateFavourites())
           .then(() => this.getTotal())
         }
+        this.favourites = newFavourites;
       } else {
         var res = this.favourites.filter(item1 =>
           !newFavourites.some(item2 => (item2.symbol === item1.symbol && item2.purchase_date === item1.purchase_date)))
@@ -92,6 +99,10 @@ export default {
         eventBus.$emit('new-price', newValue);
       },
       getStocks(favourite){
+        if (this.chartData[0].length > 2) {
+          debugger;
+          this.deleteChartData(this.chartData[0].length - 1);
+        }
         this.chartOptions.title = Object.keys(this.fetchedStock)[1];
         this.chartData[0].push(`${this.fetchedStock["Meta Data"]["2. Symbol"]}: ${favourite.purchase_date}`);
         if (this.chartData[0].length > 2) {
@@ -184,6 +195,7 @@ export default {
           this.chartData = [['Date']];
         }
         else {
+          debugger;
           for (let i = 0; i < this.chartData.length; i++) {
             this.chartData[i].splice(index, 1);
           }
