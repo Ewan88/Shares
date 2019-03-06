@@ -9,13 +9,11 @@
       />
     </div>
   </div>
-
 </template>
 
 <script>
 import { eventBus } from '../main.js';
 import { GChart } from 'vue-google-charts';
-
 export default {
   name: 'Graph',
   components: {
@@ -23,12 +21,10 @@ export default {
   },
   data() {
     return{
-      test: [],
       favourites: [],
       key: ["C520LUMEL3DFI4ZX","FGJ6YIOA7MKB3P94","V1X9PH3SZXO178OO"],
       keyIndex: 0,
       fetchedStock: {},
-      currentFavourite: null,
       chartData: [['Date']],
       selectedData: null,
       selectedChartType: 'LineChart',
@@ -47,10 +43,9 @@ export default {
   },
   methods: {
     getFavourites(newFavourites){
-
       if (this.favourites.length < newFavourites.length) {
-        this.favourites = newFavourites
-        this.chartData = [['Date']]
+        this.favourites = newFavourites;
+        this.chartData = [['Date']];
         for (let favourite of this.favourites){
           fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${favourite.symbol}&apikey=${this.getKey()}`)
           .then(res => res.json())
@@ -67,24 +62,23 @@ export default {
               this.deleteChartData(i);
             }
           }
-          this.favourites = newFavourites
+          this.favourites = newFavourites;
           this.deleteChartData(this.favourites.length + 1)
           if (this.favourites.length > 1) {
-            this.getTotal()
+            this.getTotal();
           }
           if (this.favourites.length === 1) {
-            this.deleteChartData(2)
+            this.deleteChartData(2);
           }
         }
-
       },
       getKey(){
-        const currentKey = this.key[this.keyIndex]
-        this.keyIndex += 1
+        const currentKey = this.key[this.keyIndex];
+        this.keyIndex += 1;
         if (this.keyIndex > this.key.length) {
-          this.keyIndex = 0
+          this.keyIndex = 0;
         }
-        return currentKey
+        return currentKey;
       },
       updateFavourites(){
         let newValue = {
@@ -115,7 +109,6 @@ export default {
             }
             else {
               let sum = 0;
-              let index = 1;
               for (let j = 1; j < this.chartData[i].length; j++){
                 sum += this.chartData[i][j];
               }

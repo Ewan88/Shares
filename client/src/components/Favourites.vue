@@ -32,16 +32,12 @@
         <td id="total">{{toDollars(totalValue)}}</td>
         <td></td>
       </tr>
-
     </table>
   </div>
-
 </template>
 
 <script>
-
 import { eventBus } from '../main.js';
-
 export default {
   name: 'Favourites',
   data(){
@@ -50,7 +46,6 @@ export default {
       todayDate: ""
     }
   },
-
   computed:{
     totalDelta: function(){
       return this.favourites.reduce((total, fav) => total + ((fav.qty * fav.latest_price)-(fav.qty * fav.bought_price)),0)
@@ -59,7 +54,6 @@ export default {
       return this.favourites.reduce((total, fav) => total + (fav.qty * fav.latest_price), 0)
     }
   },
-
   methods: {
     fetchFavourites(){
       fetch('http://localhost:3000/api/shares')
@@ -137,8 +131,6 @@ export default {
         let mm = d.getMonth() + 1;
         let dd = d.getDate();
         let yy = d.getFullYear();
-        // 2019-02-18
-        // var myDateString = yy + '-' + mm + '-' + dd;
         this.todayDate = yy + '-' + mm.toString().padStart(2,'0') + '-' + dd.toString().padStart(2,'0');
       },
 
@@ -163,7 +155,5 @@ export default {
         this.updateSharePrice(sharePrice)
       })
     },
-    components: {
-    }
   }
   </script>
