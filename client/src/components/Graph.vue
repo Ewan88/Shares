@@ -24,7 +24,6 @@ export default {
   data() {
     return{
       test: [],
-
       favourites: [],
       key: ["C520LUMEL3DFI4ZX","FGJ6YIOA7MKB3P94","V1X9PH3SZXO178OO"],
       keyIndex: 0,
@@ -67,14 +66,6 @@ export default {
             if (`${res[0].symbol}: ${res[0].purchase_date}` === this.chartData[0][i]) {
               this.deleteChartData(i);
             }
-
-            // if (this.favourites[i]._id === res[0]._id) {
-            //   i++;
-            //   this.deleteChartData(i);
-            // }
-
-
-
           }
           this.favourites = newFavourites
           this.deleteChartData(this.favourites.length + 1)
@@ -125,7 +116,6 @@ export default {
             else {
               let sum = 0;
               let index = 1;
-              // let sum = this.chardData[i].reduce((total, element, index)=> total+ element[index],0)
               for (let j = 1; j < this.chartData[i].length; j++){
                 sum += this.chartData[i][j];
               }

@@ -153,7 +153,6 @@ export default {
         })
       },
     },
-
     mounted(){
       this.fetchFavourites();
       this.workOutDates();
@@ -164,10 +163,7 @@ export default {
         this.updateSharePrice(sharePrice)
       })
     },
-
     components: {
     }
   }
-
-
   </script>
