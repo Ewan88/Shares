@@ -21,7 +21,7 @@ A user should be able to:
 - https://www.npmjs.com/package/vue-google-charts - visualise share data
 
 
-
+# Installation
 
 ## Setup Server
 ```
@@ -29,7 +29,7 @@ cd server
 npm install
 npm run seeds
 npm run seed:symbols
-npm run server:dev
+npm run server
 ```
 
 ## Setup Client
