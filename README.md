@@ -27,11 +27,11 @@ A user should be able to:
 ```
 cd server
 npm install
-mongod
 npm run seeds
 npm run seed:symbols
 npm run server:dev
 ```
+
 ## Setup Client
 ```
 cd client
