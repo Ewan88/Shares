@@ -51,7 +51,7 @@ export default {
     },
 
     fetchSymbols(){
-      fetch('http://localhost:3000/api/symbols')
+      fetch('https://still-gorge-15153.herokuapp.com/api/symbols')
       .then(res => res.json())
       .then(res => {
         this.rawSymbols=res

@@ -56,7 +56,7 @@ export default {
   },
   methods: {
     fetchFavourites(){
-      fetch('http://localhost:3000/api/shares')
+      fetch('https://still-gorge-15153.herokuapp.com/api/shares')
       .then(res => res.json())
       .then(favs => this.favourites=favs)
       .then(() => this.emitDisplayFavourites())
@@ -87,7 +87,7 @@ export default {
         updatedField={ [key] : Number(element[key])};
         this.favourites[index][key] = Number(element[key]);
       }
-      fetch('http://localhost:3000/api/shares/'+ element._id, {
+      fetch('https://still-gorge-15153.herokuapp.com/api/shares/'+ element._id, {
         method: 'PUT',
         body: JSON.stringify(updatedField),
         headers: { 'Content-Type': 'application/json'}});
@@ -98,7 +98,7 @@ export default {
 
       deleteFavourite(id, index){
         this.favourites.splice(index,1);
-        fetch('http://localhost:3000/api/shares/' + id, {
+        fetch('https://still-gorge-15153.herokuapp.com/api/shares/' + id, {
           method: 'DELETE'
         })
         .then(() => this.emitDisplayFavourites())
@@ -114,7 +114,7 @@ export default {
           "bought_price": null,
           "latest_price": null
         };
-        fetch('http://localhost:3000/api/shares/', {
+        fetch('https://still-gorge-15153.herokuapp.com/api/shares/', {
           method: 'POST',
           body: JSON.stringify(newRecord),
           headers: { 'Content-Type': 'application/json'}
