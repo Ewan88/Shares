@@ -23,21 +23,12 @@ A user should be able to:
 
 # Installation
 
-## Setup Server
 ```
-cd server
 npm install
-npm run seeds
-npm run seed:symbols
 npm run server
-```
-
-## Setup Client
-```
-cd client
-npm install
 npm run serve
 ```
+
 ## Main Page
 ```
 http://localhost:8080/
