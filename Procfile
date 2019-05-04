@@ -1,4 +1,3 @@
 # Procfile
 
-worker: npm run server
-web: npm run serve
+web: npm run start
