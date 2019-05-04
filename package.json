@@ -1,0 +1,61 @@
+{
+  "name": "shares",
+  "description": "a share tracker app",
+  "version": "1.0.0",
+  "engines": {
+    "node": "11.4.0",
+    "npm": "6.x"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "nodemon ./server/server.js",
+    "seeds": "mongo < ./server/db/seeds.js",
+    "seed:symbols": "mongo < ./server/db/seedSymbols.js",
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "nodemon": "^1.19.0",
+    "vue-google-charts": "^0.3.2",
+    "cors": "^2.8.5",
+    "vue": "^2.6.6",
+    "vue-simple-search-dropdown": "^1.0.0"
+  },
+  "devDependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "mongodb": "^3.2.3",
+    "@vue/cli-plugin-babel": "^3.4.0",
+    "@vue/cli-plugin-eslint": "^3.4.0",
+    "@vue/cli-service": "^3.4.0",
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.8.0",
+    "eslint-plugin-vue": "^5.0.0",
+    "vue-template-compiler": "^2.5.21"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "rules": {},
+    "parserOptions": {
+      "parser": "babel-eslint"
+    }
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
+}
