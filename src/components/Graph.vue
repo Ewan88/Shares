@@ -57,10 +57,10 @@ export default {
         }
         this.favourites = newFavourites;
       } else {
-        var res = this.favourites.filter(item1 =>
+        var filteredStocks = this.favourites.filter(item1 =>
           !newFavourites.some(item2 => (item2.symbol === item1.symbol && item2.purchase_date === item1.purchase_date)))
           for (var i = 0; i < this.chartData[0].length; i++) {
-            if (`${res[0].symbol}: ${res[0].purchase_date}` === this.chartData[0][i]) {
+            if (`${filteredStocks[0].symbol}: ${filteredStocks[0].purchase_date}` === this.chartData[0][i]) {
               this.deleteChartData(i);
             }
           }
