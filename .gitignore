@@ -1,7 +1,6 @@
 .DS_Store
 node_modules
 seed_api_keys.js
-/dist
 Deploying a Mongo_Express_Webpack App to Heroku.md
 
 # local env files
