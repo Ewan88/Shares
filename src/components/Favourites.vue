@@ -17,9 +17,9 @@
         <td><input v-on:change="updateElement(fav, 'display', index)" type="checkbox" class="checkbox"  v-bind:key="fav._id" v-model="fav.display" :id="fav._id" :name="fav._id" :checked="fav.display"/></td>
         <td>{{fav.symbol}}</td>
         <td>{{fav.name}}</td>
-        <td><input v-on:change="updateElement(fav, 'purchase_date', index)" type="date"  name="fav_date"  :id="fav._id" v-model="fav.purchase_date" :max="todayDate"/></td>
-        <td><input v-on:change="updateElement(fav, 'qty', index)" type="number" name="fav_quantity" :id="fav._id" v-model="fav.qty" min="0"/></td>
-        <td><input v-on:change="updateElement(fav, 'bought_price', index)" type="number" name="fav_boughtPrice" :id="fav._id" v-model="fav.bought_price" min="0"/></td>
+        <td><input :disabled="fav.display == 1 ? true : false" v-on:change="updateElement(fav, 'purchase_date', index)" type="date"  name="fav_date"  :id="fav._id" v-model="fav.purchase_date" :max="todayDate"/></td>
+        <td><input :disabled="fav.display == 1 ? true : false" v-on:change="updateElement(fav, 'qty', index)" type="number" name="fav_quantity" :id="fav._id" v-model="fav.qty" min="0"/></td>
+        <td><input :disabled="fav.display == 1 ? true : false" v-on:change="updateElement(fav, 'bought_price', index)" type="number" name="fav_boughtPrice" :id="fav._id" v-model="fav.bought_price" min="0"/></td>
         <td>{{toDollars(fav.latest_price)}}</td>
         <td>{{toDollars(((fav.qty * fav.latest_price)-(fav.qty * fav.bought_price)))}}</td>
         <td>{{toDollars((fav.qty*fav.latest_price))}}</td>
@@ -43,7 +43,7 @@ export default {
   data(){
     return{
       favourites: [],
-      todayDate: ""
+      todayDate: "",
     }
   },
   computed:{

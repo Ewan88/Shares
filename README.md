@@ -20,16 +20,23 @@ A user should be able to:
 - https://www.alphavantage.co/ (Requires sign up)
 - https://www.npmjs.com/package/vue-google-charts - visualise share data
 
+---
 
-# Installation
+### Requires NPM and Node.js
+
+### Install Node Modules
 
 ```
-npm install
-npm run server
+npm i
+```
+
+### Development
+
+```
 npm run serve
 ```
 
-## Main Page
+### Deployment
 ```
-http://localhost:8080/
+npm run start
 ```
