@@ -126,7 +126,7 @@ export default {
         })
       },
 
-      workOutDates: function(){
+      workOutDates(){
         let d = new Date();
         let mm = d.getMonth() + 1;
         let dd = d.getDate();
