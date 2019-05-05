@@ -22,21 +22,26 @@ A user should be able to:
 
 ---
 
-### Requires NPM and Node.js
+#### Requires Node.js and NPM
 
-### Install Node Modules
+```
+node --version
+npm --version
+```
+
+#### Install Node Modules
 
 ```
 npm i
 ```
 
-### Development
+#### Development
 
 ```
 npm run serve
 ```
 
-### Deployment
+#### Deployment
 ```
 npm run start
 ```
