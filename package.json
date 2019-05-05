@@ -13,6 +13,7 @@
     "start": "node server.js"
   },
   "dependencies": {
+    "express": "^4.16.4",
     "vue": "^2.6.6",
     "vue-simple-search-dropdown": "^1.0.0",
     "vue-google-charts": "^0.3.2"
