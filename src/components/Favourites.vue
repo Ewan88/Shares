@@ -19,7 +19,7 @@
         <td>{{fav.name}}</td>
         <td><input :disabled="fav.display == 1 ? true : false" v-on:change="updateElement(fav, 'purchase_date', index)" type="date"  name="fav_date"  :id="fav._id" v-model="fav.purchase_date" :max="todayDate"/></td>
         <td><input :disabled="fav.display == 1 ? true : false" v-on:change="updateElement(fav, 'qty', index)" type="number" name="fav_quantity" :id="fav._id" v-model="fav.qty" min="0"/></td>
-        <td><input :disabled="fav.display == 1 ? true : false" v-on:change="updateElement(fav, 'bought_price', index)" type="number" name="fav_boughtPrice" :id="fav._id" v-model="fav.bought_price" min="0"/></td>
+        <td>{{toDollars(fav.bought_price)}}</td>
         <td>{{toDollars(fav.latest_price)}}</td>
         <td>{{toDollars(((fav.qty * fav.latest_price)-(fav.qty * fav.bought_price)))}}</td>
         <td>{{toDollars((fav.qty*fav.latest_price))}}</td>
@@ -136,13 +136,13 @@ export default {
 
       updateSharePrice(newPrice){
         this.favourites.forEach((fav, index) => {
-          if (fav.symbol==newPrice.symbol){
-            if (fav.bought_price==null){
-              this.updateElement({'_id': this.favourites[index]['_id'], 'bought_price': newPrice.value}, 'bought_price', index, false)
+          if (fav.symbol == newPrice.symbol){
+            if (fav.bought_price == newPrice.start || fav.bought_price == null){
+              this.updateElement({'_id': this.favourites[index]['_id'], 'bought_price': newPrice.start}, 'bought_price', index, false)
             }
-            this.updateElement({'_id': this.favourites[index]['_id'], 'latest_price': newPrice.value}, 'latest_price', index, false)
+            this.updateElement({'_id': this.favourites[index]['_id'], 'latest_price': newPrice.end}, 'latest_price', index, false)
           }
-        })
+        });
       },
     },
     mounted(){
@@ -153,7 +153,7 @@ export default {
       });
       eventBus.$on("new-price", (sharePrice) => {
         this.updateSharePrice(sharePrice)
-      })
+      });
     },
   }
   </script>

@@ -85,12 +85,15 @@ export default {
       updateFavourites(){
         let newValue = {
           symbol: null,
-          value: null,
+          start: null,
+          end: null
         }
         newValue.symbol = this.fetchedStock["Meta Data"]["2. Symbol"];
         let time_series = Object.keys(this.fetchedStock)[1];
-        let date = Object.keys(this.fetchedStock[time_series])[0];
-        newValue.value = this.fetchedStock[time_series][date]['4. close'];
+        let startDate = Object.keys(this.fetchedStock[time_series])[0];
+        newValue.start = this.fetchedStock[time_series][startDate]['4. close'];
+        let endDate = Object.keys(this.fetchedStock[time_series]).pop();
+        newValue.end = this.fetchedStock[time_series][endDate]['4. close'];
         eventBus.$emit('new-price', newValue);
       },
       getStocks(favourite){
