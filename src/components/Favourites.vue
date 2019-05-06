@@ -88,7 +88,7 @@ export default {
       return str
     },
 
-    updateElement(element, key, index, emit = true){
+    updateElement(element, key, index){
       let updatedField={};
       if (isNaN(Number(element[key]))){
         updatedField={ [key] : element[key]};
@@ -100,64 +100,64 @@ export default {
       fetch('https://still-gorge-15153.herokuapp.com/api/shares/'+ element._id, {
         method: 'PUT',
         body: JSON.stringify(updatedField),
-        headers: { 'Content-Type': 'application/json'}});
-        if (emit) {
-          this.emitDisplayFavourites()
-        }
-      },
-
-      deleteFavourite(id, index){
-        this.totalDelta - ((this.favourites[index].qty * this.favourites[index].latest_price) - (this.favourites[index].qty * this.favourites[index].bought_price));
-        this.totalValue - (this.favourites[index].qty * this.favourites[index].latest_price);
-        this.favourites.splice(index,1);
-        fetch('https://still-gorge-15153.herokuapp.com/api/shares/' + id, {
-          method: 'DELETE'
-        })
-        .then(() => this.emitDisplayFavourites())
-      },
-
-      addFavourite(equity){
-        let newRecord={
-          "symbol": equity["Symbol"],
-          "name": equity["Name"],
-          "qty": 0,
-          "display": false,
-          "purchase_date": this.todayDate,
-          "bought_price": null,
-          "latest_price": null
-        };
-        fetch('https://still-gorge-15153.herokuapp.com/api/shares/', {
-          method: 'POST',
-          body: JSON.stringify(newRecord),
-          headers: { 'Content-Type': 'application/json'}
-        })
-        .then(res => res.json())
-        .then(res => {
-          this.favourites.push(res)
-          this.emitDisplayFavourites()
-        })
-      },
-
-      workOutDates(){
-        let d = new Date();
-        let mm = d.getMonth() + 1;
-        let dd = d.getDate();
-        let yy = d.getFullYear();
-        this.todayDate = yy + '-' + mm.toString().padStart(2,'0') + '-' + dd.toString().padStart(2,'0');
-      },
-
-      updateSharePrice(newPrice){
-        this.favourites.forEach((fav, index) => {
-          if (fav.symbol == newPrice.symbol){
-            if (fav.bought_price == newPrice.start || fav.bought_price == null){
-              this.updateElement({'_id': this.favourites[index]['_id'], 'bought_price': newPrice.start}, 'bought_price', index, false)
-            }
-            this.updateElement({'_id': this.favourites[index]['_id'], 'latest_price': newPrice.end}, 'latest_price', index, false)
-          }
-        });
-      },
+        headers: { 'Content-Type': 'application/json'}
+      });
+      this.emitDisplayFavourites()
     },
-    mounted(){
+
+    deleteFavourite(id, index){
+      this.totalDelta - ((this.favourites[index].qty * this.favourites[index].latest_price) - (this.favourites[index].qty * this.favourites[index].bought_price));
+      this.totalValue - (this.favourites[index].qty * this.favourites[index].latest_price);
+      this.favourites.splice(index,1);
+      fetch('https://still-gorge-15153.herokuapp.com/api/shares/' + id, {
+        method: 'DELETE'
+      })
+      .then(() => this.emitDisplayFavourites())
+    },
+
+    addFavourite(equity){
+      let newRecord={
+        "symbol": equity["Symbol"],
+        "name": equity["Name"],
+        "qty": 0,
+        "display": false,
+        "purchase_date": this.todayDate,
+        "bought_price": null,
+        "latest_price": null
+      };
+      fetch('https://still-gorge-15153.herokuapp.com/api/shares/', {
+        method: 'POST',
+        body: JSON.stringify(newRecord),
+        headers: { 'Content-Type': 'application/json'}
+      })
+      .then(res => res.json())
+      .then(res => {
+        this.favourites.push(res)
+        this.emitDisplayFavourites()
+      })
+    },
+
+    workOutDates(){
+      let d = new Date();
+      let mm = d.getMonth() + 1;
+      let dd = d.getDate();
+      let yy = d.getFullYear();
+      this.todayDate = yy + '-' + mm.toString().padStart(2,'0') + '-' + dd.toString().padStart(2,'0');
+    },
+
+    updateSharePrice(newPrice){
+      this.favourites.forEach((fav, index) => {
+        if (fav.symbol == newPrice.symbol){
+          if (fav.bought_price == newPrice.start || fav.bought_price == null){
+            this.updateElement({'_id': this.favourites[index]['_id'], 'bought_price': newPrice.start}, 'bought_price', index, false)
+          }
+          this.updateElement({'_id': this.favourites[index]['_id'], 'latest_price': newPrice.end}, 'latest_price', index, false)
+        }
+      });
+    },
+
+  },
+  mounted(){
       this.fetchFavourites();
       this.workOutDates();
       eventBus.$on("favourites-added", (equity) => {
