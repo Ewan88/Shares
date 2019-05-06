@@ -22,7 +22,7 @@ export default {
   data() {
     return{
       favourites: [],
-      key: ["C520LUMEL3DFI4ZX","FGJ6YIOA7MKB3P94","V1X9PH3SZXO178OO"],
+      key: "V1X9PH3SZXO178OO",
       keyIndex: 0,
       fetchedStock: {},
       chartData: [['Date']],
@@ -38,9 +38,6 @@ export default {
       },
     };
   },
-  mounted(){
-    eventBus.$on('favourites-changed', (newFavourites) => {this.getFavourites(newFavourites);})
-  },
   methods: {
     getFavourites(newFavourites){
       if (this.favourites.length < newFavourites.length) {
@@ -48,7 +45,7 @@ export default {
           !this.favourites.some(item2 => (item2.symbol === item1.symbol && item2.purchase_date === item1.purchase_date)))
 
         for (let i = 0; i < res.length; i++){
-          fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${res[i].symbol}&apikey=${this.getKey()}`)
+          fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${res[i].symbol}&apikey=${this.key}`)
           .then(res => res.json())
           .then(stock => this.fetchedStock = stock)
           .then(() => this.getStocks(res[i]))
@@ -76,14 +73,7 @@ export default {
           }
         }
       },
-      getKey(){
-        const currentKey = this.key[this.keyIndex];
-        this.keyIndex += 1;
-        if (this.keyIndex > this.key.length) {
-          this.keyIndex = 0;
-        }
-        return currentKey;
-      },
+
       updateFavourites(){
         let newValue = {
           symbol: null,
@@ -98,6 +88,7 @@ export default {
         newValue.end = this.fetchedStock[time_series][endDate]['4. close'];
         eventBus.$emit('new-price', newValue);
       },
+
       getStocks(favourite){
         if (this.chartData[0].length > 2) {
           this.deleteChartData(this.chartData[0].length - 1);
@@ -111,6 +102,7 @@ export default {
           this.getChartData(favourite);
         }
       },
+
       getTotal(){
         if ((this.favourites.length === this.chartData[0].length - 1)&&(this.favourites.length > 1)) {
           for (let i = 0; i < this.chartData.length; i++){
@@ -127,6 +119,7 @@ export default {
           }
         }
       },
+
       getChartData(favourite){
         let timeKey = Object.keys(this.fetchedStock)[1];
         let arrayStore = [];
@@ -143,6 +136,7 @@ export default {
           this.chartData.push(closingVal);
         }
       },
+
       getMultipleChartData(favourite){
         let timeKey = Object.keys(this.fetchedStock)[1];
         let arrayStoreLabels = [];
@@ -189,6 +183,7 @@ export default {
           }
         }
       },
+
       deleteChartData(index){
         if (this.chartData[0].length < 2) {
           this.chartData = [['Date']];
@@ -199,6 +194,9 @@ export default {
           }
         }
       },
+    },
+    mounted(){
+      eventBus.$on('favourites-changed', (newFavourites) => {this.getFavourites(newFavourites);})
     },
   };
   </script>

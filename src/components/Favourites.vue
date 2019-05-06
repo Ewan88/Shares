@@ -47,12 +47,22 @@ export default {
     }
   },
   computed:{
-    totalDelta: function(){
-      return this.favourites.reduce((total, fav) => total + ((fav.qty * fav.latest_price)-(fav.qty * fav.bought_price)),0)
+    totalDelta: {
+      get: function(){
+        return this.favourites.reduce((total, fav) => total + ((fav.qty * fav.latest_price)-(fav.qty * fav.bought_price)),0);
+      },
+      set: function(newDelta){
+        return this.totalDelta - newDelta;
+      }
     },
-    totalValue: function(){
-      return this.favourites.reduce((total, fav) => total + (fav.qty * fav.latest_price), 0)
-    }
+    totalValue: {
+      get: function(){
+        return this.favourites.reduce((total, fav) => total + (fav.qty * fav.latest_price), 0)
+      },
+      set: function(newValue){
+        return this.totalValue - newValue;
+      }
+    },
   },
   methods: {
     fetchFavourites(){
@@ -97,6 +107,8 @@ export default {
       },
 
       deleteFavourite(id, index){
+        this.totalDelta - ((this.favourites[index].qty * this.favourites[index].latest_price) - (this.favourites[index].qty * this.favourites[index].bought_price));
+        this.totalValue - (this.favourites[index].qty * this.favourites[index].latest_price);
         this.favourites.splice(index,1);
         fetch('https://still-gorge-15153.herokuapp.com/api/shares/' + id, {
           method: 'DELETE'
